@@ -5,6 +5,7 @@ public enum BusinessExceptionEnum {
 	PARAM_VAILD_ERROR("101","参数校验错误,缺少必填参数"),
 	SYSTEM_ERROR("500","系统存在异常"),
 	USER_IS_NOT_FOUND("102","用户未找到"),
+	USER_PASS_IS_ERROR("103","用户名或者密码错误"),
 	;
 
 	private String code;
