@@ -1,5 +1,7 @@
 package cn.com.hzbank.grade.bean;
 
+import cn.com.hzbank.grade.constant.GradeConstant;
+
 /**
  * 评分系统抽象基类
  * 
@@ -11,6 +13,7 @@ public abstract class GradeAbstractBean {
 	private Long createTime;
 	private Long updateTime;
 	private Integer status;
+	private Integer dsKey=GradeConstant.getSingleDataSourceKey();
 
 	protected final Long getId() {
 		return id;
@@ -26,6 +29,16 @@ public abstract class GradeAbstractBean {
 
 	protected final void setCreateTime(Long createTime) {
 		this.createTime = createTime;
+	}
+	
+	
+
+	public Integer getDsKey() {
+		return dsKey;
+	}
+
+	public void setDsKey(Integer dsKey) {
+		this.dsKey = dsKey;
 	}
 
 	protected final Long getUpdateTime() {

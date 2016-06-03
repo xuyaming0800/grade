@@ -8,13 +8,27 @@ import autonavi.online.framework.property.PropertiesConfigUtil;
 public class GradeConstant {
 	private static Logger logger = LogManager.getLogger(GradeConstant.class);
 	public static final String PROP_SINGLE_DATASOURCE_KEY = "SINGLE_DATASOURCE_KEY";
+	
+	public enum USER_INFO_STATUS {
+		// 0 使用 1 不适用
+		USED(0), UNUSED(1);
+		private int code;
+
+		public int getCode() {
+			return code;
+		}
+
+		private USER_INFO_STATUS(int code) {
+			this.code = code;
+		}
+	}
 
 	/**
 	 * 获取单一来源数据库编号
 	 * 
 	 * @return
 	 */
-	public static int getSingleDataSourceKey() {
+	public static final int getSingleDataSourceKey() {
 		Integer dsKey = 1;
 		try {
 			dsKey = new Integer((String) PropertiesConfigUtil
