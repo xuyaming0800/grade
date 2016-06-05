@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.9, for Win32 (AMD64)
+-- MySQL dump 10.13  Distrib 5.6.19, for osx10.7 (i386)
 --
--- Host: 192.168.120.23    Database: grade
+-- Host: localhost    Database: grade
 -- ------------------------------------------------------
--- Server version	5.7.11
+-- Server version	5.6.25
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -88,7 +88,39 @@ CREATE TABLE `grade_batch_info` (
 
 LOCK TABLES `grade_batch_info` WRITE;
 /*!40000 ALTER TABLE `grade_batch_info` DISABLE KEYS */;
+INSERT INTO `grade_batch_info` VALUES (1,'2016年中期考核',1,1,0);
 /*!40000 ALTER TABLE `grade_batch_info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `grade_batch_item`
+--
+
+DROP TABLE IF EXISTS `grade_batch_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grade_batch_item` (
+  `id` int(32) NOT NULL,
+  `batch_id` int(32) DEFAULT NULL,
+  `item_id` int(32) DEFAULT NULL,
+  `create_time` int(32) DEFAULT NULL,
+  `update_time` int(32) DEFAULT NULL,
+  `status` int(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `INDEX_BATCH_ID` (`batch_id`),
+  KEY `INDEX_ITEM_ID` (`item_id`),
+  KEY `INDEX_STATUS` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `grade_batch_item`
+--
+
+LOCK TABLES `grade_batch_item` WRITE;
+/*!40000 ALTER TABLE `grade_batch_item` DISABLE KEYS */;
+INSERT INTO `grade_batch_item` VALUES (1,1,1,1,1,0),(2,1,2,1,1,0),(3,1,3,1,1,0);
+/*!40000 ALTER TABLE `grade_batch_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -114,6 +146,7 @@ CREATE TABLE `grade_item_info` (
 
 LOCK TABLES `grade_item_info` WRITE;
 /*!40000 ALTER TABLE `grade_item_info` DISABLE KEYS */;
+INSERT INTO `grade_item_info` VALUES (1,'态度',1,1,0),(2,'效率',1,1,0),(3,'成果',1,1,NULL);
 /*!40000 ALTER TABLE `grade_item_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,6 +236,7 @@ CREATE TABLE `org_info` (
 
 LOCK TABLES `org_info` WRITE;
 /*!40000 ALTER TABLE `org_info` DISABLE KEYS */;
+INSERT INTO `org_info` VALUES (1,'测试组织',NULL,1,1,0);
 /*!40000 ALTER TABLE `org_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,7 +285,9 @@ CREATE TABLE `user_info` (
   `update_time` int(32) DEFAULT NULL,
   `status` int(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id_UNIQUE` (`uid`)
+  UNIQUE KEY `user_id_UNIQUE` (`uid`),
+  KEY `index_status` (`status`),
+  KEY `index_o_s` (`org_id`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -261,7 +297,7 @@ CREATE TABLE `user_info` (
 
 LOCK TABLES `user_info` WRITE;
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
-INSERT INTO `user_info` VALUES (-1,-1,-1,'admin','admin','admin',-1,-1,0);
+INSERT INTO `user_info` VALUES (-1,-1,-1,'admin','admin','admin',-1,-1,0),(1,1,1,'ceshi','1001','1001',1,1,0),(2,1,1,'cs1','1002','1002',1,1,0),(3,1,1,'cs2','1003','1003',1,1,0);
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -282,4 +318,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-03 17:37:02
+-- Dump completed on 2016-06-05 17:25:15

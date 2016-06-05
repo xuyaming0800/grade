@@ -9,6 +9,7 @@ import autonavi.online.framework.sharding.entry.aspect.annotation.SingleDataSour
 import autonavi.online.framework.sharding.entry.aspect.annotation.SqlParameter;
 import autonavi.online.framework.sharding.entry.entity.CollectionType;
 import cn.com.hzbank.grade.bean.UserInfo;
+import cn.com.hzbank.grade.constant.GradeConstant.USER_INFO_STATUS;
 
 @Repository
 public class UserInfoDao {
@@ -29,6 +30,8 @@ public class UserInfoDao {
 	public Object getAllUserInfo(@SqlParameter("deKey") Integer dsKey) {
 		StringBuffer sql = new StringBuffer();
 		sql.append("select id,org_id orgId,user_name userName,uid,user_pass userPass,CREATE_TIME createTime,UPDATE_TIME updateTime,status ");
+		sql.append(" where status=");
+		sql.append(USER_INFO_STATUS.USED.getCode());
 		sql.append(" from user_info order by id asc ");
 		return sql.toString();
 	}
@@ -39,6 +42,8 @@ public class UserInfoDao {
 	public Object getUserInfoByPage(@SqlParameter("deKey") Integer dsKey,@SqlParameter("start") Integer start,@SqlParameter("size") Integer size) {
 		StringBuffer sql = new StringBuffer();
 		sql.append("select id,org_id orgId,user_name userName,uid,user_pass userPass,CREATE_TIME createTime,UPDATE_TIME updateTime,status ");
+		sql.append(" where status=");
+		sql.append(USER_INFO_STATUS.USED.getCode());
 		sql.append(" from user_info order by id asc ");
 		sql.append(" limit #{start},#{size} ");
 		return sql.toString();
@@ -73,7 +78,8 @@ public class UserInfoDao {
 		StringBuffer sql = new StringBuffer();
 		sql.append("select id,org_id orgId,user_name userName,uid,user_pass userPass,CREATE_TIME createTime,UPDATE_TIME updateTime,status ");
 		sql.append(" from user_info  ");
-		sql.append(" where org_id=#{info.orgId} ");
+		sql.append(" where org_id=#{info.orgId} and status=");
+		sql.append(USER_INFO_STATUS.USED.getCode());
 		return sql.toString();
 	}
 
