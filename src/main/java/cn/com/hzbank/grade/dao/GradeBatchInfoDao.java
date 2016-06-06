@@ -40,4 +40,16 @@ public class GradeBatchInfoDao {
 		sql.append(" limit #{start},#{size} ");
 		return sql.toString();
 	}
+	
+	@Author("yaming.xu")
+	@SingleDataSource(keyName = "dsKey")
+	@Select(collectionType = CollectionType.column, resultType = Long.class)
+	public Object getOpenBatchInfoCount(@SqlParameter("dsKey") Integer dsKey) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select count(0) ");
+		sql.append(" from grade_batch_info ");
+		sql.append(" where status=");
+		sql.append(BATCH_INFO_STATUS.OPEN.getCode());
+		return sql.toString();
+	}
 }

@@ -31,21 +31,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style>
+.pagination .active a{
+  background-color: black;
+  border-color: black;
+}
+.pagination>.active>a:hover{
+   background-color: black;
+  border-color: black;
+}
+</style>
 <script src="<%=path%>/resources/js/jquery-1.11.1.min.js"></script>
+<script src="<%=path%>/resources/js/bootstrap-paginator.min.js"></script>
 <script type="text/javascript">
-var pageSize=10;
-var pageNum=1;
-var currentSize=0;
 function init(){
 	getBatchInfo();
 }
-function getBatchInfo(){
+function getBatchInfo(page){
+  if(page==null||page== undefined){
+    page=1;
+  }
   $("#batch").find("tbody").children().remove();
   $.ajax({
 		   type: "POST",
 		   url: "../common/getOpenBatch",
 		   dataType:"json",
-		   data:{"pageNum":pageNum,"pageSize":pageSize} ,
+		   data:{"pageNum":page,"pageSize":options.limit} ,
 		   success: function(msg){
 		     if(msg.status.code==0){
 		    	 initJsonFileTable(msg)
@@ -63,33 +74,46 @@ $(document).ready(function(){
 });
 
 function initJsonFileTable(msg){
-    currentSize=msg.result.length;
+    var count=0;
     if(msg.result.length==0){
-       var html="<tr><td colspan='2'>已经到最后一页</td></tr>";
+       var html="<tr><td colspan='2'>查询结果为空</td></tr>";
 	   $("#batch").find("tbody").append(html);
-	   return; 
+	   count++;
     }
-	for(var i=0;i<msg.result.length;i++){
+    else{
+      for(var i=0;i<msg.result.length;i++){
 		var html="<tr><td>"+msg.result[i].batchName+"</td><td><a href='javascript:editRunBase(\""+msg.result[i].id+"\")'>开始评分</a></td></tr>";
 		$("#batch").find("tbody").append(html);
+		count++
+	  }
+    }
+    for(var i=count;i<options.limit;i++){
+       var html="<tr style='height:37px'><td colspan='2'></td></tr>";
+	   $("#batch").find("tbody").append(html);
+    }
+	//初始化
+	if(!flag){
+	  initPage(options, "akListPage",msg.totalCount,options.limit);
 	}
 }
-function next(){
-  if(currentSize==0){
-     alert("已经是最后一页");
-     return;
-  }
-  pageNum=pageNum+1;
-  getBatchInfo();
+
+var flag=false;
+var options = {
+			bootstrapMajorVersion : 3,
+			limit : 1,
+			onPageClicked : function(event, originalEvent, type, page) {
+			  getBatchInfo(page);
+			}
 }
-function previous(){
-  if(pageNum==1){
-    alert("已经是第一页");
-    return;
-  }
-  pageNum=pageNum-1;
-  getBatchInfo();
-}
+function initPage(options, id, totalCount, limit) {
+			//分页显示
+			var pageElement = $("#" + id + "");
+			options.totalPages = Math
+					.floor(totalCount % limit == 0 ? (totalCount / limit)
+							: (totalCount / limit + 1));
+			pageElement.bootstrapPaginator(options);
+			flag=true;
+		}
 </script>
 </head>
 
@@ -111,12 +135,15 @@ function previous(){
 					<tbody>
 					</tbody>
 				</table>
+				
 			</div>
 		</div>
-		<div class="row text-center">
+		<div class="row">
 			<div class="col-sm-12 col-md-12">
-				<input class="btn btn-default btn-xs" type="button" value="上一页" onclick="javascript:previous()">
-				<input class="btn btn-default btn-xs" type="button" value="下一页" onclick="javascript:next()">
+				<div style="width:100%;text-align:center;padding-right:2px;">
+					<ul id="akListPage" class="pagination pagination-sx">
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -14,6 +14,7 @@ import cn.com.hzbank.grade.dao.GradeBatchInfoDao;
 import cn.com.hzbank.grade.exception.BusinessException;
 import cn.com.hzbank.grade.exception.BusinessExceptionEnum;
 import cn.com.hzbank.grade.service.GradeService;
+import cn.com.hzbank.grade.web.bean.ResultEntity;
 @Service
 public class GradeServiceImpl implements GradeService {
 	private Logger logger = LogManager.getLogger(this.getClass());
@@ -36,13 +37,16 @@ public class GradeServiceImpl implements GradeService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<GradeBatchInfo> getOpenBatchInfoByPage(Integer pageNum,
+	public ResultEntity getOpenBatchInfoByPage(Integer pageNum,
 			Integer pageSize) throws BusinessException {
 		try {
 			Integer start=(pageNum-1)*pageSize;
 			List<GradeBatchInfo> list=(List<GradeBatchInfo>)gradeBatchInfoDao.getOpenBatchInfoByPage(GradeConstant.getSingleDataSourceKey(),start,pageSize);
 			if(list==null)list=new ArrayList<GradeBatchInfo>();
-			return list;
+			ResultEntity entity=new ResultEntity();
+			entity.setResult(list);
+			entity.setTotalCount(((Long)gradeBatchInfoDao.getOpenBatchInfoCount(GradeConstant.getSingleDataSourceKey())).toString());
+			return entity;
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);

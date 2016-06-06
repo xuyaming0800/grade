@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.com.hzbank.grade.bean.GradeBatchInfo;
 import cn.com.hzbank.grade.exception.BusinessException;
+import cn.com.hzbank.grade.web.bean.ResultEntity;
 
 /**
  * 评分相关服务接口
@@ -24,5 +25,5 @@ public interface GradeService {
 	 * @return
 	 * @throws BusinessException
 	 */
-	public List<GradeBatchInfo> getOpenBatchInfoByPage(Integer pageNum,Integer pageSize)throws BusinessException;
+	public ResultEntity getOpenBatchInfoByPage(Integer pageNum,Integer pageSize)throws BusinessException;
 }
