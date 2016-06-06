@@ -71,7 +71,7 @@ body{
 														},
 														success : function(msg) {
 															if (msg.status.code == 0) {
-																alert("登录成功")
+																location.href = "common/frame";
 															} else {
 															    alert(msg.status.msg)
 															}

@@ -15,19 +15,19 @@ public abstract class GradeAbstractBean {
 	private Integer status;
 	private Integer dsKey=GradeConstant.getSingleDataSourceKey();
 
-	protected final Long getId() {
+	public final Long getId() {
 		return id;
 	}
 
-	protected final void setId(Long id) {
+	public final void setId(Long id) {
 		this.id = id;
 	}
 
-	protected final Long getCreateTime() {
+	public final Long getCreateTime() {
 		return createTime;
 	}
 
-	protected final void setCreateTime(Long createTime) {
+	public final void setCreateTime(Long createTime) {
 		this.createTime = createTime;
 	}
 	
@@ -41,19 +41,19 @@ public abstract class GradeAbstractBean {
 		this.dsKey = dsKey;
 	}
 
-	protected final Long getUpdateTime() {
+	public final Long getUpdateTime() {
 		return updateTime;
 	}
 
-	protected final void setUpdateTime(Long updateTime) {
+	public final void setUpdateTime(Long updateTime) {
 		this.updateTime = updateTime;
 	}
 
-	protected final Integer getStatus() {
+	public final Integer getStatus() {
 		return status;
 	}
 
-	protected final void setStatus(Integer status) {
+	public final void setStatus(Integer status) {
 		this.status = status;
 	}
 	

@@ -27,6 +27,16 @@ public class IndexController extends BaseController {
 	public String login() throws Exception {
 		return "login";
 	}
+	
+	@RequestMapping("/common/frame")
+	public String frame() throws Exception {
+		return "common/frame";
+	}
+	
+	@RequestMapping("/common/manager_top")
+	public String manager_top() throws Exception {
+		return "common/manager_top";
+	}
 
 	@RequestMapping("/checkLogin")
 	@ResponseBody
