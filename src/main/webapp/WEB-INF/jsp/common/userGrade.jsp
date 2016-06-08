@@ -96,6 +96,7 @@ function getUserInfo(){
 
 $(document).ready(function(){
 	init();
+	initBind();
 });
 var fieldArray=new Array();
 function toField(msg){
@@ -108,13 +109,14 @@ function toField(msg){
 	html=html+"</tr>"
 	$("#user_batch").find("thead").append(html);
 }
+var userSize=0;
 function toGrade(msg){
-   var size=msg.result.length;
+    userSize=msg.result.length;
     for(var i=0;i<msg.result.length;i++){
 		 var html="<tr><td style='border:1px solid;' width='20%'>"+msg.result[i].userName+"</td>";
          for(var j=0;j<fieldArray.length;j++){
 		   var _html="<td style='border:1px solid;text-align:center'><select name='"+msg.result[i].id+"_"+fieldArray[j]+"' class='gradeSelect'>";
-		   for(var k=1;k<=size;k++){
+		   for(var k=1;k<=userSize;k++){
 		     var __html="<option value='"+k+"'>"+k+"</option>";
 		     _html=_html+__html;
 		   }
@@ -124,6 +126,37 @@ function toGrade(msg){
 	     html=html+"</tr>"
 	     $("#user_batch").find("tbody").append(html);
      }
+}
+function initBind(){
+  $("button.submitGrade").on("click",function(){
+      var gradeObj={};
+      var flag=false;
+      $("select.gradeSelect").each(function(i){
+        $(this).parent().css("background-color","white");
+      })
+      $.each(fieldArray,function(i,n){
+        gradeObj[""+n+""]=new Array(userSize);
+      });
+	  $("select.gradeSelect").each(function(i){
+	    var selectName=$(this).attr("name").split("_");
+	    var _userId=selectName[0];
+	    var _itemId=selectName[1];
+	    var grade=$(this).val();
+	    var indexValue=gradeObj[""+_itemId+""][grade-1];
+	    if(indexValue==null||indexValue==undefined){
+	      gradeObj[""+_itemId+""][grade-1]=_userId;
+	    }else{
+	      flag=true;
+	      $(this).parent().css("background-color","red");
+	      $("select[name='"+indexValue+"_"+_itemId+"']").parent().css("background-color","red");
+	    }
+	  });
+	  if(flag){
+	    alert("同一项目的排名不能重复");
+	  }
+	  
+	  //alert( gradeObj["1"]);
+	});
 }
 	
 
@@ -151,6 +184,11 @@ function toGrade(msg){
 				</table>
 				
 			</div>
+		</div>
+		<div class="row text-center">
+		<div class="col-sm-12 col-md-12 main">
+		  <button type="button" class="btn btn-primary submitGrade">提交</button>
+		</div>
 		</div>
 	</div>
 
