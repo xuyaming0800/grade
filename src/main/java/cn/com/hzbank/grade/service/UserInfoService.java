@@ -1,5 +1,7 @@
 package cn.com.hzbank.grade.service;
 
+import java.util.List;
+
 import cn.com.hzbank.grade.bean.UserInfo;
 import cn.com.hzbank.grade.exception.BusinessException;
 
@@ -15,6 +17,13 @@ public interface UserInfoService {
 	 * @return
 	 * @throws BusinessException
 	 */
-	public boolean checkUserLogin(UserInfo userInfo)throws BusinessException;
+	public UserInfo checkUserLogin(UserInfo userInfo)throws BusinessException;
+	/**
+	 * 根据部门获取用户信息
+	 * @param orgId
+	 * @return
+	 * @throws BusinessException
+	 */
+	public List<UserInfo> getUserInfoByOrg(UserInfo userInfo)throws BusinessException;
 
 }

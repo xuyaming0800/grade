@@ -1,5 +1,8 @@
 package cn.com.hzbank.grade.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private UserInfoDao userInfoDao;
 
 	@Override
-	public boolean checkUserLogin(UserInfo userInfo) throws BusinessException {
+	public UserInfo checkUserLogin(UserInfo userInfo) throws BusinessException {
 		userInfo.setDsKey(GradeConstant.getSingleDataSourceKey());
 		try {
 			UserInfo info=(UserInfo)userInfoDao.getUserInfoByUid(userInfo);
@@ -28,8 +31,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 				throw e;
 			}
 			if(!info.getUserPass().equals(userInfo.getUserPass())){
-				return false;
+				return null;
 			}
+			return info;
 		} catch (Exception e) {
 			if(!(e instanceof BusinessException)){
 				logger.error(e.getMessage(),e);
@@ -40,7 +44,27 @@ public class UserInfoServiceImpl implements UserInfoService {
 			}
 			
 		}
-		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UserInfo> getUserInfoByOrg(UserInfo userInfo) throws BusinessException {
+		try {
+			List<UserInfo> l=(List<UserInfo>)userInfoDao.getUserInfoByOrgId(userInfo);
+			if(l==null){
+				l=new ArrayList<UserInfo>();
+			}
+			return l;
+		} catch (Exception e) {
+			if(!(e instanceof BusinessException)){
+				logger.error(e.getMessage(),e);
+				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+				throw e1;
+			}else{
+				throw (BusinessException)e;
+			}
+			
+		}
 	}
 
 }

@@ -75,7 +75,7 @@ public class UserInfoDao {
 	
 	@Author("yaming.xu")
 	@SingleDataSource(keyName="info.dsKey")
-	@Select(collectionType = CollectionType.bean, resultType = UserInfo.class)
+	@Select(collectionType = CollectionType.beanList, resultType = UserInfo.class)
 	public Object getUserInfoByOrgId(@SqlParameter("info") UserInfo info) {
 		StringBuffer sql = new StringBuffer();
 		sql.append("select id,org_id orgId,user_name userName,uid,user_pass userPass,CREATE_TIME createTime,UPDATE_TIME updateTime,status ");

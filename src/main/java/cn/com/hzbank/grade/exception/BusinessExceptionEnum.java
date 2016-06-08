@@ -6,6 +6,8 @@ public enum BusinessExceptionEnum {
 	SYSTEM_ERROR("500","系统存在异常"),
 	USER_IS_NOT_FOUND("102","用户未找到"),
 	USER_PASS_IS_ERROR("103","用户名或者密码错误"),
+	GRADE_ITEM_IS_NULL("104","评分项目未设定"),
+	ORG_USER_IS_NULL("105","部门下没有员工"),
 	;
 
 	private String code;

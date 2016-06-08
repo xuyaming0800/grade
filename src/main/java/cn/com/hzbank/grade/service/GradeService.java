@@ -3,6 +3,7 @@ package cn.com.hzbank.grade.service;
 import java.util.List;
 
 import cn.com.hzbank.grade.bean.GradeBatchInfo;
+import cn.com.hzbank.grade.bean.GradeItemInfo;
 import cn.com.hzbank.grade.exception.BusinessException;
 import cn.com.hzbank.grade.web.bean.ResultEntity;
 
@@ -26,4 +27,11 @@ public interface GradeService {
 	 * @throws BusinessException
 	 */
 	public ResultEntity getOpenBatchInfoByPage(Integer pageNum,Integer pageSize)throws BusinessException;
+	/**
+	 * 根据评分活动ID获取评分项目
+	 * @param batchId
+	 * @return
+	 * @throws BusinessException
+	 */
+	public List<GradeItemInfo> getGradeItemInfoByBatch(Long batchId)throws BusinessException;
 }

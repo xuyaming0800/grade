@@ -1,5 +1,7 @@
 package cn.com.hzbank.grade.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.hzbank.grade.bean.UserInfo;
 import cn.com.hzbank.grade.bean.UserInfo.LoginCheck;
+import cn.com.hzbank.grade.constant.GradeConstant;
 import cn.com.hzbank.grade.exception.BusinessException;
 import cn.com.hzbank.grade.exception.BusinessExceptionEnum;
 import cn.com.hzbank.grade.service.UserInfoService;
@@ -28,6 +31,11 @@ public class IndexController extends BaseController {
 		return "login";
 	}
 	
+	@RequestMapping("/session_timeout")
+	public String sessionTimeout() throws Exception {
+		return "session_timeout";
+	}
+	
 	@RequestMapping("/common/frame")
 	public String frame() throws Exception {
 		return "common/frame";
@@ -41,7 +49,7 @@ public class IndexController extends BaseController {
 	@RequestMapping("/checkLogin")
 	@ResponseBody
 	public Object checklogin(@Validated({ LoginCheck.class }) UserInfo user,
-			BindingResult result){
+			BindingResult result,HttpServletRequest request){
 		ResultEntity entity=new ResultEntity();
 		try {
 			if(result.hasErrors()){
@@ -53,11 +61,13 @@ public class IndexController extends BaseController {
 				entity=this.writeErrorResult(entity, BusinessExceptionEnum.PARAM_VAILD_ERROR.getCode(),sb.toString());
 				return entity;
 			}
-			boolean flag=userInfoService.checkUserLogin(user);
-			if(!flag){
+			UserInfo _user=userInfoService.checkUserLogin(user);
+			if(_user==null){
 				entity=this.writeError(entity, BusinessExceptionEnum.USER_PASS_IS_ERROR);
 			}else{
 				entity=this.writeSuccess(entity);
+				_user.setUserPass(null);
+				request.getSession().setAttribute(GradeConstant.USER_SESSION, _user);
 			}
 		} catch (BusinessException e) {
 			entity=this.writeError(entity, e);

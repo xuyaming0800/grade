@@ -9,6 +9,8 @@ public class GradeConstant {
 	private static Logger logger = LogManager.getLogger(GradeConstant.class);
 	public static final String PROP_SINGLE_DATASOURCE_KEY = "SINGLE_DATASOURCE_KEY";
 	
+	public static final String USER_SESSION = "USER_SESSION";
+	
 	public enum BATCH_INFO_STATUS {
 		// 0 开发 1关闭
 		OPEN(0), CLOSE(1);

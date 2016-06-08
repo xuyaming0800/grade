@@ -5,6 +5,7 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String batchId=request.getParameter("batchId");
 UserInfo user=(UserInfo)request.getSession().getAttribute(GradeConstant.USER_SESSION);
 %>
 <html lang="en">
@@ -49,23 +50,22 @@ UserInfo user=(UserInfo)request.getSession().getAttribute(GradeConstant.USER_SES
 <script src="<%=path%>/resources/js/bootstrap-paginator.min.js"></script>
 <script type="text/javascript">
 function init(){
-	getBatchInfo();
+	getBatchItem();
 }
-function getBatchInfo(page){
-  if(page==null||page== undefined){
-    page=1;
-  }
-  $("#batch").find("tbody").children().remove();
+function getBatchItem(){
+  $("#user_batch").find("thead").children().remove();
+  $("#user_batch").find("tbody").children().remove();
   $.ajax({
 		   type: "POST",
-		   url: "../common/getOpenBatch",
+		   url: "../common/getGradeItem",
 		   dataType:"json",
-		   data:{"pageNum":page,"pageSize":options.limit} ,
+		   data:{"batchId":<%=batchId%>} ,
 		   success: function(msg){
 		     if(msg.status.code==0){
-		    	 initJsonFileTable(msg)
+		    	 toField(msg);
+		    	 getUserInfo();
 		     }else{
-		    	alert("出现错误,请联系管理员")
+		    	alert(msg.status.msg)
 		     }
 		   },
 		   error:function(){
@@ -73,56 +73,61 @@ function getBatchInfo(page){
 		   }
 	});
 }
+
+function getUserInfo(){
+   $("#user_batch").find("tbody").children().remove();
+   $.ajax({
+		   type: "POST",
+		   url: "../common/getUserInfo",
+		   dataType:"json",
+		   data:{"orgId":<%= user.getOrgId() %>} ,
+		   success: function(msg){
+		     if(msg.status.code==0){
+		    	 toGrade(msg)
+		     }else{
+		    	alert(msg.status.msg)
+		     }
+		   },
+		   error:function(){
+			   toLogin('<%=path%>');
+		   }
+	});
+}
+
 $(document).ready(function(){
 	init();
 });
-
-function initJsonFileTable(msg){
-    var count=0;
-    if(msg.result.length==0){
-       var html="<tr><td colspan='2'>查询结果为空</td></tr>";
-	   $("#batch").find("tbody").append(html);
-	   count++;
-    }
-    else{
-      for(var i=0;i<msg.result.length;i++){
-		var html="<tr><td>"+msg.result[i].batchName+"</td><td><a href='javascript:startGrade("+msg.result[i].id+")'>开始评分</a></td></tr>";
-		$("#batch").find("tbody").append(html);
-		count++
-	  }
-    }
-    for(var i=count;i<options.limit;i++){
-       var html="<tr style='height:37px'><td colspan='2'></td></tr>";
-	   $("#batch").find("tbody").append(html);
-    }
-	//初始化
-	if(!flag){
-	  initPage(options, "akListPage",msg.totalCount,options.limit);
+var fieldArray=new Array();
+function toField(msg){
+    var html="<tr><td style='border:1px solid;' width='20%'></td>";
+    for(var i=0;i<msg.result.length;i++){
+		var _html="<td style='border:1px solid;text-align:center'>"+msg.result[i].itemName+"-排名</td>";
+		html=html+_html;
+		fieldArray.push(msg.result[i].id);
 	}
+	html=html+"</tr>"
+	$("#user_batch").find("thead").append(html);
 }
+function toGrade(msg){
+   var size=msg.result.length;
+    for(var i=0;i<msg.result.length;i++){
+		 var html="<tr><td style='border:1px solid;' width='20%'>"+msg.result[i].userName+"</td>";
+         for(var j=0;j<fieldArray.length;j++){
+		   var _html="<td style='border:1px solid;text-align:center'><select name='"+msg.result[i].id+"_"+fieldArray[j]+"' class='gradeSelect'>";
+		   for(var k=1;k<=size;k++){
+		     var __html="<option value='"+k+"'>"+k+"</option>";
+		     _html=_html+__html;
+		   }
+		   _html=_html+"</select></td>";
+		   html=html+_html;
+	     }
+	     html=html+"</tr>"
+	     $("#user_batch").find("tbody").append(html);
+     }
+}
+	
 
-function startGrade(batchId){
-  $("#batchId").val(batchId);
-  $("#userGrade").submit();
-}
 
-var flag=false;
-var options = {
-			bootstrapMajorVersion : 3,
-			limit : 1,
-			onPageClicked : function(event, originalEvent, type, page) {
-			  getBatchInfo(page);
-			}
-}
-function initPage(options, id, totalCount, limit) {
-			//分页显示
-			var pageElement = $("#" + id + "");
-			options.totalPages = Math
-					.floor(totalCount % limit == 0 ? (totalCount / limit)
-							: (totalCount / limit + 1));
-			pageElement.bootstrapPaginator(options);
-			flag=true;
-		}
 </script>
 </head>
 
@@ -132,8 +137,8 @@ function initPage(options, id, totalCount, limit) {
 		<div class="row">
 			<div class="col-sm-12 col-md-12 main">
 				
-				<table class="table" id="batch">
-					<caption>绩效考勤评分活动列表
+				<table class="table" id="user_batch">
+					<caption>部门内员工打分表格
 					</caption>
 					<thead>
 						<tr>
@@ -147,18 +152,8 @@ function initPage(options, id, totalCount, limit) {
 				
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-12 col-md-12">
-				<div style="width:100%;text-align:center;padding-right:2px;">
-					<ul id="akListPage" class="pagination pagination-sx">
-					</ul>
-				</div>
-			</div>
-		</div>
 	</div>
-    <form action="../common/userGrade" method="post" id="userGrade">
-    <input type="hidden" id="batchId" name="batchId">
-    </form>
+
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
