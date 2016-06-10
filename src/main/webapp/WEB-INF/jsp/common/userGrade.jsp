@@ -153,12 +153,29 @@ function initBind(){
 	  });
 	  if(flag){
 	    alert("同一项目的排名不能重复");
+	    return;
 	  }
-	  
-	  //alert( gradeObj["1"]);
+	  submitGradeUser(gradeObj);
 	});
 }
-	
+function submitGradeUser(datas){
+  $.ajax({
+		   type: "POST",
+		   url: "../common/submitGradeUserInfo",
+		   dataType:"json",
+		   data:{"orgId":<%= user.getOrgId() %>,"batchId":<%=batchId%>,"content":JSON.stringify(datas)} ,
+		   success: function(msg){
+		     if(msg.status.code==0){
+		    	alert("提交成功")
+		     }else{
+		    	alert(msg.status.msg)
+		     }
+		   },
+		   error:function(){
+			   toLogin('<%=path%>');
+		   }
+	});
+}	
 
 
 </script>

@@ -4,6 +4,8 @@ import java.util.List;
 
 import cn.com.hzbank.grade.bean.GradeBatchInfo;
 import cn.com.hzbank.grade.bean.GradeItemInfo;
+import cn.com.hzbank.grade.bean.GradeUserInfo;
+import cn.com.hzbank.grade.bean.UserInfo;
 import cn.com.hzbank.grade.exception.BusinessException;
 import cn.com.hzbank.grade.web.bean.ResultEntity;
 
@@ -34,4 +36,20 @@ public interface GradeService {
 	 * @throws BusinessException
 	 */
 	public List<GradeItemInfo> getGradeItemInfoByBatch(Long batchId)throws BusinessException;
+	/**
+	 * 添加用户评分结果
+	 * @param list
+	 * @param info
+	 * @param batchId
+	 * @throws BusinessException
+	 */
+	public void addGraadUserInfos(List<GradeUserInfo> list,UserInfo info,Long batchId)throws BusinessException;
+	/**
+	 * 检测用户是否已经提交过
+	 * @param info
+	 * @param batchId
+	 * @return
+	 * @throws BusinessException
+	 */
+	public boolean checkGradeUserInfoSubmit(UserInfo info,Long batchId)throws BusinessException;
 }

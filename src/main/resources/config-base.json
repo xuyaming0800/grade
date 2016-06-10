@@ -11,11 +11,11 @@
     },
     "shardIndex": 1,
     "indexTableMap": {
-        "USER_ID_INDEX": [
+        "GRADE_BATCH_INDEX": [
             {
-                "name": "user_id",
+                "name": "batch_id",
                 "columnType": "long",
-                "columnName": "user_id",
+                "columnName": "batch_id",
                 "length": 32
             }
         ]
@@ -31,7 +31,7 @@
                 "unreturnedConnectionTimeout":"300",
                 "testConnectionOnCheckout": "false",
                 "breakAfterAcquireFailure": "false",
-                "password": "root",
+                "password": "93f0cb0614",
                 "acquireIncrement": "100",
                 "idleConnectionTestPeriod": "60",
                 "maxPoolSize": "4",
@@ -39,7 +39,7 @@
                 "minPoolSize": "1",
                 "driverClass": "com.mysql.jdbc.Driver",
                 "initialPoolSize": "1",
-                "jdbcUrl": "jdbc:mysql://192.168.120.23:3306/grade?rewriteBatchedStatements=true",
+                "jdbcUrl": "jdbc:mysql://localhost:3306/grade?rewriteBatchedStatements=true",
                 "user": "root"
             }
         }

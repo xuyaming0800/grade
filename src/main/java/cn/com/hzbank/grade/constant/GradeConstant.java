@@ -52,6 +52,20 @@ public class GradeConstant {
 			this.code = code;
 		}
 	}
+	
+	public enum GRADE_USER_INFO_STATUS {
+		// 0 使用 1 不适用
+		USED(0), UNUSED(1);
+		private int code;
+
+		public int getCode() {
+			return code;
+		}
+
+		private GRADE_USER_INFO_STATUS(int code) {
+			this.code = code;
+		}
+	}
 
 	/**
 	 * 获取单一来源数据库编号

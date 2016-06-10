@@ -8,6 +8,7 @@ public enum BusinessExceptionEnum {
 	USER_PASS_IS_ERROR("103","用户名或者密码错误"),
 	GRADE_ITEM_IS_NULL("104","评分项目未设定"),
 	ORG_USER_IS_NULL("105","部门下没有员工"),
+	GRADE_USER_IS_SUBMIT("106","您已经在这个部门内完成了评比"),
 	;
 
 	private String code;

@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 
 import cn.com.hzbank.grade.bean.GradeBatchInfo;
 import cn.com.hzbank.grade.bean.GradeItemInfo;
+import cn.com.hzbank.grade.bean.GradeUserInfo;
+import cn.com.hzbank.grade.bean.UserInfo;
 import cn.com.hzbank.grade.constant.GradeConstant;
 import cn.com.hzbank.grade.dao.GradeBatchInfoDao;
 import cn.com.hzbank.grade.dao.GradeItemInfoDao;
+import cn.com.hzbank.grade.dao.GradeUserInfoDao;
 import cn.com.hzbank.grade.exception.BusinessException;
 import cn.com.hzbank.grade.exception.BusinessExceptionEnum;
 import cn.com.hzbank.grade.service.GradeService;
@@ -25,6 +28,8 @@ public class GradeServiceImpl implements GradeService {
 	private GradeBatchInfoDao gradeBatchInfoDao;
 	@Autowired
 	private GradeItemInfoDao gradeItemInfoDao;
+	@Autowired
+	private GradeUserInfoDao gradeUserInfoDao;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -86,6 +91,59 @@ public class GradeServiceImpl implements GradeService {
 					BusinessExceptionEnum.SYSTEM_ERROR);
 			throw e1;
 		}
+	}
+
+	@Override
+	public void addGraadUserInfos(List<GradeUserInfo> list,UserInfo info,Long batchId)
+			throws BusinessException {
+		try {
+			//检测是否已经提交过
+			GradeUserInfo _info=new GradeUserInfo();
+			_info.setBatchId(batchId);
+			_info.setOpUserId(info.getId());
+			_info.setOrgId(info.getOrgId());
+			Integer count=(Integer)gradeUserInfoDao.getGradeUserInfoCountByOp(_info);
+			if(count>0){
+				BusinessException e=new BusinessException(BusinessExceptionEnum.GRADE_USER_IS_SUBMIT);
+				throw e;
+			}
+			//批量入库
+			gradeUserInfoDao.addGradeUserInfos(list);
+		} catch (Exception e) {
+			if(!(e instanceof BusinessException)){
+				logger.error(e.getMessage(),e);
+				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+				throw e1;
+			}else{
+				throw (BusinessException)e;
+			}
+		}
+		
+	}
+
+	@Override
+	public boolean checkGradeUserInfoSubmit(UserInfo info, Long batchId)
+			throws BusinessException {
+		try {
+			GradeUserInfo _info=new GradeUserInfo();
+			_info.setBatchId(batchId);
+			_info.setOpUserId(info.getId());
+			_info.setOrgId(info.getOrgId());
+			Integer count=(Integer)gradeUserInfoDao.getGradeUserInfoCountByOp(_info);
+			if(count>0){
+				BusinessException e=new BusinessException(BusinessExceptionEnum.GRADE_USER_IS_SUBMIT);
+				throw e;
+			}
+		} catch (Exception e) {
+			if(!(e instanceof BusinessException)){
+				logger.error(e.getMessage(),e);
+				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+				throw e1;
+			}else{
+				throw (BusinessException)e;
+			}
+		}
+		return true;
 	}
 
 }

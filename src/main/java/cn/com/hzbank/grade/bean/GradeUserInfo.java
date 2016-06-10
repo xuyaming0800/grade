@@ -6,7 +6,7 @@ public class GradeUserInfo extends GradeAbstractBean implements Serializable {
 	private static final long serialVersionUID = 5672162333202873781L;
 	private Long opUserId;
 	private Long userId;
-	private Long gradeId;
+	private Long itemId;
 	private Long batchId;
 	private Long orgId;
 	private Integer grade;
@@ -27,12 +27,12 @@ public class GradeUserInfo extends GradeAbstractBean implements Serializable {
 		this.userId = userId;
 	}
 
-	public Long getGradeId() {
-		return gradeId;
+	public Long getItemId() {
+		return itemId;
 	}
 
-	public void setGradeId(Long gradeId) {
-		this.gradeId = gradeId;
+	public void setItemId(Long itemId) {
+		this.itemId = itemId;
 	}
 
 	public Long getBatchId() {
