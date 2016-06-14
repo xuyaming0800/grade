@@ -12,6 +12,17 @@ public class GradeBatchInfo extends GradeAbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 4568205435959754857L;
 	private String batchName;
+	private String userId;
+	
+	
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public String getBatchName() {
 		return batchName;

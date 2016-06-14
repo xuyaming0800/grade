@@ -43,6 +43,26 @@ public class GradeBatchInfoDao {
 	
 	@Author("yaming.xu")
 	@SingleDataSource(keyName = "dsKey")
+	@Select(collectionType = CollectionType.beanList, resultType = GradeBatchInfo.class)
+	public Object getOpenBatchInfoByPage(@SqlParameter("dsKey") Integer dsKey,
+			@SqlParameter("userId") Long userId,
+			@SqlParameter("start") Integer start,
+			@SqlParameter("size") Integer size) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select a.id,batchName,createTime,updateTime,a.status,b.user_id userId from  (");
+		sql.append("select id,batch_name batchName,CREATE_TIME createTime,UPDATE_TIME updateTime,status ");
+		sql.append(" from grade_batch_info ");
+		sql.append(" where status=");
+		sql.append(BATCH_INFO_STATUS.OPEN.getCode());
+		sql.append(" order by id desc ");
+		sql.append(" limit #{start},#{size} ");
+		sql.append(") a ");
+		sql.append(" left join grade_user_flag b on a.id=b.batch_id and b.user_id=#{userId} order by a.id desc ");
+		return sql.toString();
+	}
+	
+	@Author("yaming.xu")
+	@SingleDataSource(keyName = "dsKey")
 	@Select(collectionType = CollectionType.column, resultType = Long.class)
 	public Object getOpenBatchInfoCount(@SqlParameter("dsKey") Integer dsKey) {
 		StringBuffer sql = new StringBuffer();

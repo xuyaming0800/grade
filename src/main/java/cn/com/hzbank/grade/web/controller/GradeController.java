@@ -46,7 +46,7 @@ public class GradeController extends BaseController {
 	public ModelAndView userGrade(
 			@RequestParam(value = "batchId", required = true) Long batchId)
 			throws Exception {
-		ModelAndView mv = new ModelAndView();
+		ModelAndView mv = new ModelAndView();		
 		mv.setViewName("common/userGrade");
 		mv.addObject("batchId", batchId);
 		return mv;
@@ -56,11 +56,14 @@ public class GradeController extends BaseController {
 	@ResponseBody
 	public Object getOpenBatch(
 			@RequestParam(value = "pageNum", required = true) Integer pageNum,
-			@RequestParam(value = "pageSize", required = true) Integer pageSize)
+			@RequestParam(value = "pageSize", required = true) Integer pageSize,
+			HttpServletRequest request)
 			throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
-			entity = gradeService.getOpenBatchInfoByPage(pageNum, pageSize);
+			UserInfo user = (UserInfo) request.getSession().getAttribute(
+					GradeConstant.USER_SESSION);
+			entity = gradeService.getOpenBatchInfoByPage(user.getId(),pageNum, pageSize);
 			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
 			entity = this.writeError(entity, e);
@@ -76,7 +79,7 @@ public class GradeController extends BaseController {
 	@RequestMapping("/getGradeItem")
 	@ResponseBody
 	public Object getGradeItem(
-			@RequestParam(value = "batchId", required = true) Long batchId)
+			@RequestParam(value = "batchId", required = true) String batchId)
 			throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
@@ -104,7 +107,7 @@ public class GradeController extends BaseController {
 	@RequestMapping("/getUserInfo")
 	@ResponseBody
 	public Object getUserInfo(
-			@RequestParam(value = "orgId", required = true) Long orgId)
+			@RequestParam(value = "orgId", required = true) String orgId)
 			throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
@@ -134,8 +137,8 @@ public class GradeController extends BaseController {
 	@RequestMapping("/submitGradeUserInfo")
 	@ResponseBody
 	public Object submitGradeUserInfo(
-			@RequestParam(value = "orgId", required = true) Long orgId,
-			@RequestParam(value = "batchId", required = true) Long batchId,
+			@RequestParam(value = "orgId", required = true) String orgId,
+			@RequestParam(value = "batchId", required = true) String batchId,
 			@RequestParam(value = "content", required = true) String content,
 			HttpServletRequest request) throws Exception {
 		ResultEntity entity = new ResultEntity();
@@ -155,8 +158,8 @@ public class GradeController extends BaseController {
 					info.setStatus(GRADE_USER_INFO_STATUS.USED.getCode());
 					info.setOpUserId(user.getId());
 					info.setOrgId(orgId);
-					info.setUserId(Long.valueOf(userId));
-					info.setItemId(Long.valueOf(key));
+					info.setUserId(userId);
+					info.setItemId(key);
 					info.setGrade(count);
 					count++;
 					list.add(info);

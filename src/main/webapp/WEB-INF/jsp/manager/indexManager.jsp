@@ -3,9 +3,12 @@
 <%@page import="cn.com.hzbank.grade.bean.UserInfo"%>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-UserInfo user=(UserInfo)request.getSession().getAttribute(GradeConstant.USER_SESSION);
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+	UserInfo user = (UserInfo) request.getSession().getAttribute(
+			GradeConstant.USER_SESSION);
 %>
 <html lang="en">
 <head>
@@ -16,7 +19,7 @@ UserInfo user=(UserInfo)request.getSession().getAttribute(GradeConstant.USER_SES
 <meta name="author" content="">
 <link rel="icon" href="favicon.ico">
 
-<title>Dashboard Template for Bootstrap</title>
+<title>管理员系统维护页面</title>
 
 <!-- Bootstrap core CSS -->
 <link href="<%=path%>/resources/css/bootstrap.min.css" rel="stylesheet">
@@ -35,124 +38,66 @@ UserInfo user=(UserInfo)request.getSession().getAttribute(GradeConstant.USER_SES
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 <style>
-.pagination .active a{
-  background-color: black;
-  border-color: black;
+.pagination .active a {
+	background-color: black;
+	border-color: black;
 }
-.pagination>.active>a:hover{
-   background-color: black;
-  border-color: black;
+
+.pagination>.active>a:hover {
+	background-color: black;
+	border-color: black;
 }
 </style>
 <script src="<%=path%>/resources/js/common.js"></script>
 <script src="<%=path%>/resources/js/jquery-1.11.1.min.js"></script>
 <script src="<%=path%>/resources/js/bootstrap-paginator.min.js"></script>
 <script type="text/javascript">
-function init(){
-	getBatchInfo();
-}
-function getBatchInfo(page){
-  if(page==null||page== undefined){
-    page=1;
-  }
-  $("#batch").find("tbody").children().remove();
-  $.ajax({
-		   type: "POST",
-		   url: "../common/getOpenBatch",
-		   dataType:"json",
-		   data:{"pageNum":page,"pageSize":options.limit} ,
-		   success: function(msg){
-		     if(msg.status.code==0){
-		    	 initJsonFileTable(msg)
-		     }else{
-		    	alert("出现错误,请联系管理员")
-		     }
-		   },
-		   error:function(){
-			   toLogin('<%=path%>');
-		   }
-	});
-}
 $(document).ready(function(){
-	init();
+	initBind();
 });
-
-function initJsonFileTable(msg){
-    var count=0;
-    if(msg.result.length==0){
-       var html="<tr><td colspan='2'>查询结果为空</td></tr>";
-	   $("#batch").find("tbody").append(html);
-	   count++;
-    }
-    else{
-      for(var i=0;i<msg.result.length;i++){
-        var html="";
-        if(msg.result[i].userId==null){
-          html="<tr><td>"+msg.result[i].batchName+"</td><td><a href='javascript:startGrade("+msg.result[i].id+")'>开始评分</a></td></tr>";
-        }else{
-          html="<tr><td>"+msg.result[i].batchName+"</td><td>已经完成</td></tr>";
-        }
-		
-		$("#batch").find("tbody").append(html);
-		count++
-	  }
-    }
-    for(var i=count;i<options.limit;i++){
-       var html="<tr style='height:37px'><td colspan='2'></td></tr>";
-	   $("#batch").find("tbody").append(html);
-    }
-	//初始化
-	if(!flag){
-	  initPage(options, "akListPage",msg.totalCount,options.limit);
-	}
+function initBind(){
+  $("li.managerMenu").on("click",function(){
+    $("li.managerMenu").removeClass("active");
+    $(this).addClass("active");
+  });
 }
 
-function startGrade(batchId){
-  $("#batchId").val(batchId);
-  $("#userGrade").submit();
-}
-
-var flag=false;
+var pageFlag=false;
 var options = {
 			bootstrapMajorVersion : 3,
-			limit : 1,
-			onPageClicked : function(event, originalEvent, type, page) {
-			  getBatchInfo(page);
-			}
+			limit : 5
 }
+
 function initPage(options, id, totalCount, limit) {
 			//分页显示
 			var pageElement = $("#" + id + "");
+			options.currentPage=1;
 			options.totalPages = Math
 					.floor(totalCount % limit == 0 ? (totalCount / limit)
 							: (totalCount / limit + 1));
 			pageElement.bootstrapPaginator(options);
-			flag=true;
-		}
+			pageFlag=true;
+}
 </script>
 </head>
 
 <body>
-
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-12 col-md-12 main">
-				
-				<table class="table" id="batch">
-					<caption>绩效考勤评分活动列表
-					</caption>
-					<thead>
-						<tr>
-							<th width="60%">活动名称</th>
-							<th width="40%">操作</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-				
-			</div>
+		  <div class="col-sm-12 col-md-12 main">
+			<ul class="nav nav-tabs">
+				<li role="presentation" class="active managerMenu"><a href="">管理员首页</a></li>
+				<li role="presentation" class="managerMenu"><a href="javascript:orgManagerInit()">部门管理</a></li>
+				<li role="presentation" class="managerMenu"><a href="javascript:userManagerInit()">用户管理</a></li>
+				<li role="presentation" class="managerMenu"><a href="javascript:itemManagerInit()">测评项目管理</a></li>
+				<li role="presentation" class="managerMenu"><a href="javascript:batchManagerInit()">测评活动管理</a></li>
+			</ul>
+		  </div>
 		</div>
+		<jsp:include page="modals/orgManager.jsp"></jsp:include>
+		<jsp:include page="modals/userManager.jsp"></jsp:include>
+		<jsp:include page="modals/itemManager.jsp"></jsp:include>
+		<jsp:include page="modals/batchManager.jsp"></jsp:include>
 		<div class="row">
 			<div class="col-sm-12 col-md-12">
 				<div style="width:100%;text-align:center;padding-right:2px;">
@@ -162,9 +107,6 @@ function initPage(options, id, totalCount, limit) {
 			</div>
 		</div>
 	</div>
-    <form action="../common/userGrade" method="post" id="userGrade">
-    <input type="hidden" id="batchId" name="batchId">
-    </form>
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -174,3 +116,4 @@ function initPage(options, id, totalCount, limit) {
 	<script src="<%=path%>/resources/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
+

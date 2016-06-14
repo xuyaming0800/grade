@@ -5,22 +5,22 @@ import java.io.Serializable;
 public class GradeBatchItem extends GradeAbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -8032141561451322762L;
-	private Long batchId;
-	private Long itemId;
+	private String batchId;
+	private String itemId;
 
-	public Long getBatchId() {
+	public String getBatchId() {
 		return batchId;
 	}
 
-	public void setBatchId(Long batchId) {
+	public void setBatchId(String batchId) {
 		this.batchId = batchId;
 	}
 
-	public Long getItemId() {
+	public String getItemId() {
 		return itemId;
 	}
 
-	public void setItemId(Long itemId) {
+	public void setItemId(String itemId) {
 		this.itemId = itemId;
 	}
 

@@ -30,12 +30,20 @@ public interface GradeService {
 	 */
 	public ResultEntity getOpenBatchInfoByPage(Integer pageNum,Integer pageSize)throws BusinessException;
 	/**
+	 * 分页获取开发的评分
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 * @throws BusinessException
+	 */
+	public ResultEntity getOpenBatchInfoByPage(String userId,Integer pageNum,Integer pageSize)throws BusinessException;
+	/**
 	 * 根据评分活动ID获取评分项目
 	 * @param batchId
 	 * @return
 	 * @throws BusinessException
 	 */
-	public List<GradeItemInfo> getGradeItemInfoByBatch(Long batchId)throws BusinessException;
+	public List<GradeItemInfo> getGradeItemInfoByBatch(String batchId)throws BusinessException;
 	/**
 	 * 添加用户评分结果
 	 * @param list
@@ -43,7 +51,7 @@ public interface GradeService {
 	 * @param batchId
 	 * @throws BusinessException
 	 */
-	public void addGraadUserInfos(List<GradeUserInfo> list,UserInfo info,Long batchId)throws BusinessException;
+	public void addGraadUserInfos(List<GradeUserInfo> list,UserInfo info,String batchId)throws BusinessException;
 	/**
 	 * 检测用户是否已经提交过
 	 * @param info
@@ -51,5 +59,5 @@ public interface GradeService {
 	 * @return
 	 * @throws BusinessException
 	 */
-	public boolean checkGradeUserInfoSubmit(UserInfo info,Long batchId)throws BusinessException;
+	public boolean checkGradeUserInfoSubmit(UserInfo info,String batchId)throws BusinessException;
 }

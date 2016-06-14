@@ -39,7 +39,7 @@
                 "minPoolSize": "1",
                 "driverClass": "com.mysql.jdbc.Driver",
                 "initialPoolSize": "1",
-                "jdbcUrl": "jdbc:mysql://localhost:3306/grade?rewriteBatchedStatements=true",
+                "jdbcUrl": "jdbc:mysql://localhost:3306/grade?rewriteBatchedStatements=true&characterEncoding=utf-8",
                 "user": "root"
             }
         }

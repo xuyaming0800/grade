@@ -39,6 +39,34 @@ public class GradeConstant {
 		}
 	}
 	
+	public enum ORG_INFO_STATUS {
+		// 0 使用 1 不适用
+		USED(0), UNUSED(1);
+		private int code;
+
+		public int getCode() {
+			return code;
+		}
+
+		private ORG_INFO_STATUS(int code) {
+			this.code = code;
+		}
+	}
+	
+	public enum USER_INFO_TYPE {
+		// 0 使用 1 不适用
+		COMMON(0), LEADOR(1),ADMIN(-1);
+		private int code;
+
+		public int getCode() {
+			return code;
+		}
+
+		private USER_INFO_TYPE(int code) {
+			this.code = code;
+		}
+	}
+	
 	public enum GRADE_ITEM_INFO_STATUS {
 		// 0 使用 1 不适用
 		USED(0), UNUSED(1);

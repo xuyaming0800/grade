@@ -39,6 +39,11 @@
 		<filter-name>checkUserFilter</filter-name>
 		<url-pattern>/common/*</url-pattern>
 	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>checkUserFilter</filter-name>
+		<url-pattern>/manager/*</url-pattern>
+	</filter-mapping>
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

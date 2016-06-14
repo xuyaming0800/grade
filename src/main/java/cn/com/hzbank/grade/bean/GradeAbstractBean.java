@@ -9,17 +9,17 @@ import cn.com.hzbank.grade.constant.GradeConstant;
  *
  */
 public abstract class GradeAbstractBean {
-	private Long id;
+	private String id;
 	private Long createTime;
 	private Long updateTime;
 	private Integer status;
 	private Integer dsKey=GradeConstant.getSingleDataSourceKey();
 
-	public final Long getId() {
+	public final String getId() {
 		return id;
 	}
 
-	public final void setId(Long id) {
+	public final void setId(String id) {
 		this.id = id;
 	}
 

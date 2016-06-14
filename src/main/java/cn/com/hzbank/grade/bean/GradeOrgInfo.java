@@ -4,41 +4,41 @@ import java.io.Serializable;
 
 public class GradeOrgInfo extends GradeAbstractBean implements Serializable {
 	private static final long serialVersionUID = 5672162333202873781L;
-	private Long userId;
-	private Long gradeId;
-	private Long batchId;
-	private Long orgId;
+	private String userId;
+	private String gradeId;
+	private String batchId;
+	private String orgId;
 	private Double score;
 
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	public Long getGradeId() {
+	public String getGradeId() {
 		return gradeId;
 	}
 
-	public void setGradeId(Long gradeId) {
+	public void setGradeId(String gradeId) {
 		this.gradeId = gradeId;
 	}
 
-	public Long getBatchId() {
+	public String getBatchId() {
 		return batchId;
 	}
 
-	public void setBatchId(Long batchId) {
+	public void setBatchId(String batchId) {
 		this.batchId = batchId;
 	}
 
-	public Long getOrgId() {
+	public String getOrgId() {
 		return orgId;
 	}
 
-	public void setOrgId(Long orgId) {
+	public void setOrgId(String orgId) {
 		this.orgId = orgId;
 	}
 

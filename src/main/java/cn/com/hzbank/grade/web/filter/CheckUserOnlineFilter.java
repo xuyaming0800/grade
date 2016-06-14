@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import cn.com.hzbank.grade.bean.UserInfo;
 import cn.com.hzbank.grade.constant.GradeConstant;
+import cn.com.hzbank.grade.constant.GradeConstant.USER_INFO_TYPE;
 import cn.com.hzbank.grade.web.controller.BaseController;
 
 public class CheckUserOnlineFilter extends BaseController implements Filter {
@@ -28,35 +29,19 @@ public class CheckUserOnlineFilter extends BaseController implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
-//		HttpServletResponse repo=(HttpServletResponse)response;
-//	    String xhr=req.getHeader("x-requested-with");
-//	    boolean isAjax=false;
-//	    if(xhr!=null&&xhr.toLowerCase().equals("xmlhttprequest")){
-//	    	//JS AJAX
-//	    	isAjax=true;
-//	    }
 	    UserInfo user=(UserInfo)req.getSession().getAttribute(GradeConstant.USER_SESSION);
 	    if(user==null){
-//	    	if(isAjax){
-//	    		ResultEntity entity=new ResultEntity();
-//	    		entity=this.writeError(entity, BusinessExceptionEnum.USER_LOGIN_TIMEOUT);
-//	    		PrintWriter printOut=null;
-//	    		try {
-//					printOut = repo.getWriter();
-//					printOut.println(binder.toJson(entity));
-//					printOut.flush();
-//				} catch (IOException e) {
-//					throw e;
-//				}finally{
-//					if(printOut!=null);
-//					printOut.close();
-//				}
-//	    		
-//	    	}else{
-//	    		req.getRequestDispatcher("/session_timeout").forward(request, response);
-//	    	}
 	    	req.getRequestDispatcher("/session_timeout").forward(request, response);
+	    	return;
 	    }else{
+	    	String uri=req.getRequestURI().replace(req.getContextPath(),"");
+	    	if(uri.startsWith("/manager/")){
+	    	  //管理员权限判定
+	    	  if(user.getUserType()!=USER_INFO_TYPE.ADMIN.getCode()){
+	    		  req.getRequestDispatcher("/session_timeout").forward(request, response);
+	    		  return;
+	    	  }
+	    	}
 	    	chain.doFilter(request, response);
 	    }
 

@@ -4,59 +4,49 @@ import java.io.Serializable;
 
 public class GradeUserInfo extends GradeAbstractBean implements Serializable {
 	private static final long serialVersionUID = 5672162333202873781L;
-	private Long opUserId;
-	private Long userId;
-	private Long itemId;
-	private Long batchId;
-	private Long orgId;
+	private String opUserId;
+	private String userId;
+	private String itemId;
+	private String batchId;
+	private String orgId;
 	private Integer grade;
-
-	public Long getOpUserId() {
+	public String getOpUserId() {
 		return opUserId;
 	}
-
-	public void setOpUserId(Long opUserId) {
+	public void setOpUserId(String opUserId) {
 		this.opUserId = opUserId;
 	}
-
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
-
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
-	public Long getItemId() {
+	public String getItemId() {
 		return itemId;
 	}
-
-	public void setItemId(Long itemId) {
+	public void setItemId(String itemId) {
 		this.itemId = itemId;
 	}
-
-	public Long getBatchId() {
+	public String getBatchId() {
 		return batchId;
 	}
-
-	public void setBatchId(Long batchId) {
+	public void setBatchId(String batchId) {
 		this.batchId = batchId;
 	}
-
-	public Long getOrgId() {
+	public String getOrgId() {
 		return orgId;
 	}
-
-	public void setOrgId(Long orgId) {
+	public void setOrgId(String orgId) {
 		this.orgId = orgId;
 	}
-
 	public Integer getGrade() {
 		return grade;
 	}
-
 	public void setGrade(Integer grade) {
 		this.grade = grade;
 	}
+
+	
 
 }

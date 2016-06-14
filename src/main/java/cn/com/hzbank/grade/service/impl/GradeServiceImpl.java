@@ -73,15 +73,41 @@ public class GradeServiceImpl implements GradeService {
 			throw e1;
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResultEntity getOpenBatchInfoByPage(String userId,Integer pageNum, Integer pageSize)
+			throws BusinessException {
+		try {
+			Integer start = (pageNum - 1) * pageSize;
+			List<GradeBatchInfo> list = (List<GradeBatchInfo>) gradeBatchInfoDao
+					.getOpenBatchInfoByPage(
+							GradeConstant.getSingleDataSourceKey(),Long.valueOf(userId), start,
+							pageSize);
+			if (list == null)
+				list = new ArrayList<GradeBatchInfo>();
+			ResultEntity entity = new ResultEntity();
+			entity.setResult(list);
+			entity.setTotalCount(((Long) gradeBatchInfoDao
+					.getOpenBatchInfoCount(GradeConstant
+							.getSingleDataSourceKey())).toString());
+			return entity;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			BusinessException e1 = new BusinessException(
+					BusinessExceptionEnum.SYSTEM_ERROR);
+			throw e1;
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<GradeItemInfo> getGradeItemInfoByBatch(Long batchId)
+	public List<GradeItemInfo> getGradeItemInfoByBatch(String batchId)
 			throws BusinessException {
 		try {
 			List<GradeItemInfo> list = (List<GradeItemInfo>) gradeItemInfoDao
 					.getGradeItemInfoByBatchId(
-							GradeConstant.getSingleDataSourceKey(), batchId);
+							GradeConstant.getSingleDataSourceKey(), Long.valueOf(batchId));
 			if (list == null)
 				list = new ArrayList<GradeItemInfo>();
 			return list;
@@ -94,7 +120,7 @@ public class GradeServiceImpl implements GradeService {
 	}
 
 	@Override
-	public void addGraadUserInfos(List<GradeUserInfo> list,UserInfo info,Long batchId)
+	public void addGraadUserInfos(List<GradeUserInfo> list,UserInfo info,String batchId)
 			throws BusinessException {
 		try {
 			//检测是否已经提交过
@@ -122,7 +148,7 @@ public class GradeServiceImpl implements GradeService {
 	}
 
 	@Override
-	public boolean checkGradeUserInfoSubmit(UserInfo info, Long batchId)
+	public boolean checkGradeUserInfoSubmit(UserInfo info, String batchId)
 			throws BusinessException {
 		try {
 			GradeUserInfo _info=new GradeUserInfo();

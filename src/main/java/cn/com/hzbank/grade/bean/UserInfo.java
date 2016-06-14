@@ -17,7 +17,7 @@ public class UserInfo extends GradeAbstractBean implements Serializable {
 	private static final long serialVersionUID = -8479697070512574187L;
 	@NotNull(message = "{user.orgId.null}", groups = { AddUserInfo.class })
 	@NotEmpty(message = "{user.orgId.null}", groups = { AddUserInfo.class })
-	private Long orgId;
+	private String orgId;
 	@NotNull(message = "{user.userName.null}", groups = { AddUserInfo.class })
 	@NotEmpty(message = "{user.userName.null}", groups = { AddUserInfo.class })
 	private String userName;
@@ -33,13 +33,33 @@ public class UserInfo extends GradeAbstractBean implements Serializable {
 	private String userPass;
 	@NotNull(message = "{user.userType.null}", groups = { AddUserInfo.class })
 	@NotEmpty(message = "{user.userType.null}", groups = { AddUserInfo.class })
-	private String userType;
+	private Integer userType;
+	//额外扩展
+	private String orgName;
 
-	public Long getOrgId() {
+	
+	
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public Integer getUserType() {
+		return userType;
+	}
+
+	public void setUserType(Integer userType) {
+		this.userType = userType;
+	}
+
+	public String getOrgId() {
 		return orgId;
 	}
 
-	public void setOrgId(Long orgId) {
+	public void setOrgId(String orgId) {
 		this.orgId = orgId;
 	}
 
