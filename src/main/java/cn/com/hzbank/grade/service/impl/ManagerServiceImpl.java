@@ -3,6 +3,7 @@ package cn.com.hzbank.grade.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.com.hzbank.grade.component.BusinessExceptionUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class ManagerServiceImpl implements ManagerService {
 	private OrgInfoDao orgInfoDao;
 	@Autowired
 	private UserInfoDao userInfoDao;
+	@Autowired
+	private BusinessExceptionUtil businessExceptionUtil;
 
 	@Override
 	public OrgInfo addOrgInfo(OrgInfo orgInfo) throws BusinessException {
@@ -37,13 +40,7 @@ public class ManagerServiceImpl implements ManagerService {
 			orgInfo.setId(id.toString());
 			return orgInfo;
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -64,13 +61,7 @@ public class ManagerServiceImpl implements ManagerService {
 							.getSingleDataSourceKey(),query)).toString());
 			return entity;
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -90,13 +81,7 @@ public class ManagerServiceImpl implements ManagerService {
 							.getSingleDataSourceKey())).toString());
 			return entity;
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -108,13 +93,7 @@ public class ManagerServiceImpl implements ManagerService {
 			userInfo.setId(id.toString());
 			return userInfo;
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -135,13 +114,7 @@ public class ManagerServiceImpl implements ManagerService {
 							.getSingleDataSourceKey(),query)).toString());
 			return entity;
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -161,13 +134,7 @@ public class ManagerServiceImpl implements ManagerService {
 							.getSingleDataSourceKey())).toString());
 			return entity;
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -177,13 +144,7 @@ public class ManagerServiceImpl implements ManagerService {
 			OrgInfo info=(OrgInfo)orgInfoDao.getOrgInfoById(GradeConstant.getSingleDataSourceKey(), Long.valueOf(id));
 			return info;
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -194,13 +155,7 @@ public class ManagerServiceImpl implements ManagerService {
 			orgInfoDao.deleteOrgInfo(GradeConstant.getSingleDataSourceKey(), orgInfo);
 			return orgInfo;
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -210,13 +165,7 @@ public class ManagerServiceImpl implements ManagerService {
 			orgInfoDao.updateOrgInfo(GradeConstant.getSingleDataSourceKey(), orgInfo);
 			return orgInfo;
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 

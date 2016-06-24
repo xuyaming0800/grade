@@ -3,6 +3,7 @@ package cn.com.hzbank.grade.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.com.hzbank.grade.component.BusinessExceptionUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class GradeServiceImpl implements GradeService {
 	private GradeItemInfoDao gradeItemInfoDao;
 	@Autowired
 	private GradeUserInfoDao gradeUserInfoDao;
+	@Autowired
+	private BusinessExceptionUtil businessExceptionUtil;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -41,10 +44,7 @@ public class GradeServiceImpl implements GradeService {
 				list = new ArrayList<GradeBatchInfo>();
 			return list;
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
-			throw e1;
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -67,10 +67,7 @@ public class GradeServiceImpl implements GradeService {
 							.getSingleDataSourceKey())).toString());
 			return entity;
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
-			throw e1;
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 	
@@ -93,10 +90,7 @@ public class GradeServiceImpl implements GradeService {
 							.getSingleDataSourceKey())).toString());
 			return entity;
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
-			throw e1;
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -112,10 +106,7 @@ public class GradeServiceImpl implements GradeService {
 				list = new ArrayList<GradeItemInfo>();
 			return list;
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
-			throw e1;
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
 
@@ -136,13 +127,7 @@ public class GradeServiceImpl implements GradeService {
 			//批量入库
 			gradeUserInfoDao.addGradeUserInfos(list);
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 		
 	}
@@ -161,13 +146,7 @@ public class GradeServiceImpl implements GradeService {
 				throw e;
 			}
 		} catch (Exception e) {
-			if(!(e instanceof BusinessException)){
-				logger.error(e.getMessage(),e);
-				BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-				throw e1;
-			}else{
-				throw (BusinessException)e;
-			}
+			throw businessExceptionUtil.getBusinessException(e);
 		}
 		return true;
 	}

@@ -53,7 +53,7 @@ public interface ManagerService {
 	public ResultEntity queryOrgInfo(Integer pageNo,Integer pageSize)throws BusinessException;
 	/**
 	 * 添加用户
-	 * @param orgInfo
+	 * @param userInfo
 	 * @return
 	 * @throws BusinessException
 	 */
