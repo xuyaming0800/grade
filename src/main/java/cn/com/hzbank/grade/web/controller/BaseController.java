@@ -6,6 +6,8 @@ import cn.com.hzbank.grade.exception.BusinessException;
 import cn.com.hzbank.grade.exception.BusinessExceptionEnum;
 import cn.com.hzbank.grade.web.bean.ResultDesc;
 import cn.com.hzbank.grade.web.bean.ResultEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 
 public class BaseController {
@@ -68,6 +70,17 @@ public class BaseController {
 			ip = request.getRemoteAddr();
 		}
 		return ip;
+	}
+
+	protected ResultEntity getBindResult(BindingResult result,ResultEntity entity){
+		StringBuffer sb=new StringBuffer();
+		for(ObjectError error :result.getAllErrors()){
+			sb.append(error.getDefaultMessage());
+			sb.append(" ");
+		}
+		entity=this.writeErrorResult(entity, BusinessExceptionEnum.PARAM_VAILD_ERROR.getCode(),sb.toString());
+		return entity;
+
 	}
 
 }

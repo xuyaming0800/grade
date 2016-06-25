@@ -1,5 +1,8 @@
 package cn.com.hzbank.grade.bean;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -11,6 +14,8 @@ import java.io.Serializable;
 public class GradeItemInfo extends GradeAbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 6025485127101242800L;
+	@NotNull(message = "{item.itemName.null}", groups = { AddGradeItemInfo.class})
+	@NotEmpty(message = "{item.itemName.null}", groups = { AddGradeItemInfo.class })
 	private String itemName;
 
 	public String getItemName() {
@@ -19,6 +24,10 @@ public class GradeItemInfo extends GradeAbstractBean implements Serializable {
 
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
+	}
+
+	public interface AddGradeItemInfo{
+
 	}
 
 }

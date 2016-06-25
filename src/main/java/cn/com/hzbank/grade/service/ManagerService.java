@@ -1,5 +1,7 @@
 package cn.com.hzbank.grade.service;
 
+import cn.com.hzbank.grade.bean.GradeBatchInfo;
+import cn.com.hzbank.grade.bean.GradeItemInfo;
 import cn.com.hzbank.grade.bean.OrgInfo;
 import cn.com.hzbank.grade.bean.UserInfo;
 import cn.com.hzbank.grade.exception.BusinessException;
@@ -75,5 +77,103 @@ public interface ManagerService {
 	 * @throws BusinessException
 	 */
 	public ResultEntity queryUserInfo(Integer pageNo,Integer pageSize)throws BusinessException;
+
+	/**
+	 * 根据id查询用户
+	 * @param id
+	 * @return
+	 * @throws BusinessException
+     */
+	public UserInfo getUserInfoById(String id)throws BusinessException;
+
+	/**
+	 * 更新用户
+	 * @param userInfo
+	 * @return
+	 * @throws BusinessException
+     */
+	public UserInfo updateUserInfo(UserInfo userInfo)throws BusinessException;
+
+	/**
+	 * 删除用户
+	 * @param userInfo
+	 * @return
+	 * @throws BusinessException
+     */
+	public UserInfo removeUserInfo(UserInfo userInfo)throws BusinessException;
+	/**
+	 * 查询测评项目
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 * @throws BusinessException
+	 */
+	public ResultEntity queryItemInfo(Integer pageNo,Integer pageSize)throws BusinessException;
+
+	/**
+	 * 查询活动
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 * @throws BusinessException
+     */
+	public ResultEntity queryBatchInfo(Integer pageNo,Integer pageSize)throws BusinessException;
+
+	/**
+	 * 根据Id获取测评项目
+	 * @param id
+	 * @return
+	 * @throws BusinessException
+     */
+	public GradeItemInfo getItemInfoById(String id)throws BusinessException;
+
+	/**
+	 * 根据ID获取活动
+	 * @param id
+	 * @return
+	 * @throws BusinessException
+     */
+	public GradeBatchInfo getBatchInfoById(String id)throws BusinessException;
+
+	/**
+	 * 添加测评项目
+	 * @param itemInfo
+	 * @return
+	 * @throws BusinessException
+     */
+	public GradeItemInfo addItemInfo(GradeItemInfo itemInfo)throws BusinessException;
+
+	/**
+	 * 添加活动
+	 * @param batchInfo
+	 * @return
+	 * @throws BusinessException
+     */
+	public GradeBatchInfo addBatchInfo(GradeBatchInfo batchInfo)throws BusinessException;
+
+	/**
+	 * 更新测评项目
+	 * @param itemInfo
+	 * @return
+	 * @throws BusinessException
+     */
+	public GradeItemInfo updateItemInfo(GradeItemInfo itemInfo)throws BusinessException;
+
+	/**
+	 * 删除测评项目
+	 * @param itemInfo
+	 * @return
+	 * @throws BusinessException
+	 */
+	public GradeItemInfo removeItemInfo(GradeItemInfo itemInfo)throws BusinessException;
+
+	/**
+	 * 更新活动信息
+	 * @param atchInfo
+	 * @return
+	 * @throws BusinessException
+     */
+	public GradeBatchInfo updateBatchInfo(GradeBatchInfo atchInfo)throws BusinessException;
+
 
 }

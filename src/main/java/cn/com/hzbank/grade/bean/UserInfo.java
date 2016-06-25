@@ -15,24 +15,23 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class UserInfo extends GradeAbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -8479697070512574187L;
-	@NotNull(message = "{user.orgId.null}", groups = { AddUserInfo.class })
-	@NotEmpty(message = "{user.orgId.null}", groups = { AddUserInfo.class })
+	@NotNull(message = "{user.orgId.null}", groups = { AddUserInfo.class,ModifyUserInfo.class })
+	@NotEmpty(message = "{user.orgId.null}", groups = { AddUserInfo.class,ModifyUserInfo.class })
 	private String orgId;
-	@NotNull(message = "{user.userName.null}", groups = { AddUserInfo.class })
-	@NotEmpty(message = "{user.userName.null}", groups = { AddUserInfo.class })
+	@NotNull(message = "{user.userName.null}", groups = { AddUserInfo.class,ModifyUserInfo.class })
+	@NotEmpty(message = "{user.userName.null}", groups = { AddUserInfo.class,ModifyUserInfo.class })
 	private String userName;
 	@NotNull(message = "{user.uid.null}", groups = { LoginCheck.class,
-			AddUserInfo.class })
+			AddUserInfo.class,ModifyUserInfo.class })
 	@NotEmpty(message = "{user.uid.null}", groups = { LoginCheck.class,
-			AddUserInfo.class })
+			AddUserInfo.class,ModifyUserInfo.class })
 	private String uid;
 	@NotNull(message = "{user.userPass.null}", groups = { LoginCheck.class,
 			AddUserInfo.class })
 	@NotEmpty(message = "{user.userPass.null}", groups = { LoginCheck.class,
 			AddUserInfo.class })
 	private String userPass;
-	@NotNull(message = "{user.userType.null}", groups = { AddUserInfo.class })
-	@NotEmpty(message = "{user.userType.null}", groups = { AddUserInfo.class })
+	@NotNull(message = "{user.userType.null}", groups = { AddUserInfo.class,ModifyUserInfo.class })
 	private Integer userType;
 	//额外扩展
 	private String orgName;
@@ -91,6 +90,9 @@ public class UserInfo extends GradeAbstractBean implements Serializable {
 	}
 
 	public interface AddUserInfo {
+	}
+
+	public interface ModifyUserInfo {
 	}
 
 }

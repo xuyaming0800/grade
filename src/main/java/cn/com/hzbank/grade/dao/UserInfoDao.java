@@ -1,13 +1,9 @@
 package cn.com.hzbank.grade.dao;
 
+import autonavi.online.framework.sharding.entry.aspect.annotation.*;
 import org.springframework.stereotype.Repository;
 
 import autonavi.online.framework.sharding.dao.constant.ReservedWord;
-import autonavi.online.framework.sharding.entry.aspect.annotation.Author;
-import autonavi.online.framework.sharding.entry.aspect.annotation.Insert;
-import autonavi.online.framework.sharding.entry.aspect.annotation.Select;
-import autonavi.online.framework.sharding.entry.aspect.annotation.SingleDataSource;
-import autonavi.online.framework.sharding.entry.aspect.annotation.SqlParameter;
 import autonavi.online.framework.sharding.entry.entity.CollectionType;
 import cn.com.hzbank.grade.bean.UserInfo;
 import cn.com.hzbank.grade.constant.GradeConstant.USER_INFO_STATUS;
@@ -20,12 +16,39 @@ public class UserInfoDao {
 	@Insert
 	public Object addUserInfo(@SqlParameter("info") UserInfo info) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("insert into user_info(id,org_id,user_name,uid,user_pass,CREATE_TIME,UPDATE_TIME,status) ");
+		sql.append("insert into user_info(id,org_id,user_name,uid,user_pass,CREATE_TIME,UPDATE_TIME,status,user_type) ");
 		sql.append(" values(");
 		sql.append(" #{");
 		sql.append(ReservedWord.snowflake);
 		sql.append("},");
-		sql.append("#{info.orgId},#{info.userName},#{info.uid},#{info.userPass},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),#{info.status}");
+		sql.append("#{info.orgId},#{info.userName},#{info.uid},#{info.userPass},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),#{info.status},#{info.userType})");
+		return sql.toString();
+	}
+
+	@Author("yaming.xu")
+	@SingleDataSource(keyName="info.dsKey")
+	@Update
+	public Object updateUserInfo(@SqlParameter("info") UserInfo info) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("update user_info set user_name=#{info.userName}, ");
+		sql.append(" uid=#{info.uid}, ");
+		sql.append(" org_id=#{info.orgId}, ");
+		sql.append(" user_type=#{info.userType}, ");
+		sql.append(" update_time=UNIX_TIMESTAMP(now()) ");
+		sql.append(" where id=#{info.id}");
+		return sql.toString();
+	}
+
+	@Author("yaming.xu")
+	@SingleDataSource(keyName="info.dsKey")
+	@Update
+	public Object deleteUserInfo(@SqlParameter("info") UserInfo info) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("update user_info set status=");
+		sql.append(USER_INFO_STATUS.UNUSED.getCode());
+		sql.append(",");
+		sql.append(" update_time=UNIX_TIMESTAMP(now()) ");
+		sql.append(" where id=#{info.id}");
 		return sql.toString();
 	}
 	
@@ -75,7 +98,7 @@ public class UserInfoDao {
 	
 	@Author("yaming.xu")
 	@SingleDataSource(keyName="dsKey")
-	@Select(collectionType = CollectionType.beanList, resultType = UserInfo.class)
+	@Select(collectionType = CollectionType.column, resultType = Long.class)
 	public Object getUserInfoWithOrgCountByPage(@SqlParameter("dsKey") Integer dsKey) {
 		StringBuffer sql = new StringBuffer();
 		sql.append("select count(0) ");
@@ -88,7 +111,7 @@ public class UserInfoDao {
 	
 	@Author("yaming.xu")
 	@SingleDataSource(keyName="dsKey")
-	@Select(collectionType = CollectionType.beanList, resultType = UserInfo.class)
+	@Select(collectionType = CollectionType.column, resultType = Long.class)
 	public Object getUserInfoWithOrgCountByName(@SqlParameter("dsKey") Integer dsKey,@SqlParameter("userName") String userName) {
 		StringBuffer sql = new StringBuffer();
 		sql.append("select count(0) ");
