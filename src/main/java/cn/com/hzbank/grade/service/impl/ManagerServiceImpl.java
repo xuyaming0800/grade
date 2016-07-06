@@ -287,7 +287,7 @@ public class ManagerServiceImpl implements ManagerService {
 				GradeBatchItem bi=new GradeBatchItem();
 				bi.setStatus(0);
 				bi.setBatchId(id.toString());
-				bi.setId(info.getId());
+				bi.setItemId(info.getId());
 				l2.add(bi);
 			}
 			gradeBatchInfoDao.addGradeBatchItem(GradeConstant.getSingleDataSourceKey(),l2);

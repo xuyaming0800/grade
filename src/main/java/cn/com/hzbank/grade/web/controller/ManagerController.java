@@ -30,33 +30,31 @@ public class ManagerController extends BaseController {
 	private Logger logger = LogManager.getLogger(this.getClass());
 	@Autowired
 	private ManagerService managerService;
+
 	@RequestMapping("/indexManager")
 	public String indexManager() throws Exception {
 		return "manager/indexManager";
 	}
-	
+
 	@RequestMapping("/getOrgInfoList")
 	@ResponseBody
-	public Object getOrgInfoList(
-			@RequestParam(value = "pageNum", required = true) Integer pageNum,
+	public Object getOrgInfoList(@RequestParam(value = "pageNum", required = true) Integer pageNum,
 			@RequestParam(value = "pageSize", required = true) Integer pageSize,
-			@RequestParam(value = "query", required = true) String query)
-			throws Exception {
+			@RequestParam(value = "query", required = true) String query) throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
-			if(StringUtils.isEmpty(query)){
+			if (StringUtils.isEmpty(query)) {
 				entity = managerService.queryOrgInfo(pageNum, pageSize);
-			}else{
-				entity =managerService.queryOrgInfoByName(query, pageNum, pageSize);
+			} else {
+				entity = managerService.queryOrgInfoByName(query, pageNum, pageSize);
 			}
-			
+
 			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
 			entity = this.writeError(entity, e);
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
 			entity = this.writeError(entity, e1);
 		}
 		return entity;
@@ -64,17 +62,15 @@ public class ManagerController extends BaseController {
 
 	@RequestMapping("/getUserInfoList")
 	@ResponseBody
-	public Object getUserInfoList(
-			@RequestParam(value = "pageNum", required = true) Integer pageNum,
+	public Object getUserInfoList(@RequestParam(value = "pageNum", required = true) Integer pageNum,
 			@RequestParam(value = "pageSize", required = true) Integer pageSize,
-			@RequestParam(value = "query", required = true) String query)
-			throws Exception {
+			@RequestParam(value = "query", required = true) String query) throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
-			if(StringUtils.isEmpty(query)){
-				entity = managerService.queryUserInfo(pageNum,pageSize);
-			}else{
-				entity = managerService.queryUserInfoByName(query,pageNum,pageSize);
+			if (StringUtils.isEmpty(query)) {
+				entity = managerService.queryUserInfo(pageNum, pageSize);
+			} else {
+				entity = managerService.queryUserInfoByName(query, pageNum, pageSize);
 			}
 
 			entity = this.writeSuccess(entity);
@@ -82,8 +78,7 @@ public class ManagerController extends BaseController {
 			entity = this.writeError(entity, e);
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
 			entity = this.writeError(entity, e1);
 		}
 		return entity;
@@ -91,10 +86,8 @@ public class ManagerController extends BaseController {
 
 	@RequestMapping("/getItemInfoList")
 	@ResponseBody
-	public Object getItemInfoList(
-			@RequestParam(value = "pageNum", required = true) Integer pageNum,
-			@RequestParam(value = "pageSize", required = true) Integer pageSize)
-			throws Exception {
+	public Object getItemInfoList(@RequestParam(value = "pageNum", required = true) Integer pageNum,
+			@RequestParam(value = "pageSize", required = true) Integer pageSize) throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
 			entity = managerService.queryItemInfo(pageNum, pageSize);
@@ -103,8 +96,7 @@ public class ManagerController extends BaseController {
 			entity = this.writeError(entity, e);
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
 			entity = this.writeError(entity, e1);
 		}
 		return entity;
@@ -112,10 +104,8 @@ public class ManagerController extends BaseController {
 
 	@RequestMapping("/getBatchInfoList")
 	@ResponseBody
-	public Object getBatchList(
-			@RequestParam(value = "pageNum", required = true) Integer pageNum,
-			@RequestParam(value = "pageSize", required = true) Integer pageSize)
-			throws Exception {
+	public Object getBatchList(@RequestParam(value = "pageNum", required = true) Integer pageNum,
+			@RequestParam(value = "pageSize", required = true) Integer pageSize) throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
 			entity = managerService.queryBatchInfo(pageNum, pageSize);
@@ -124,29 +114,25 @@ public class ManagerController extends BaseController {
 			entity = this.writeError(entity, e);
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
 			entity = this.writeError(entity, e1);
 		}
 		return entity;
 	}
-	
+
 	@RequestMapping("/getOrgInfo")
 	@ResponseBody
-	public Object getOrgInfo(
-			@RequestParam(value = "orgId", required = true) String orgId)
-			throws Exception {
+	public Object getOrgInfo(@RequestParam(value = "orgId", required = true) String orgId) throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
-			OrgInfo info=managerService.getOrgInfoById(orgId);
+			OrgInfo info = managerService.getOrgInfoById(orgId);
 			entity.setResult(info);
 			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
 			entity = this.writeError(entity, e);
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
 			entity = this.writeError(entity, e1);
 		}
 		return entity;
@@ -154,20 +140,17 @@ public class ManagerController extends BaseController {
 
 	@RequestMapping("/getUserInfo")
 	@ResponseBody
-	public Object getUserInfo(
-			@RequestParam(value = "userId", required = true) String userId)
-			throws Exception {
+	public Object getUserInfo(@RequestParam(value = "userId", required = true) String userId) throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
-			UserInfo info=managerService.getUserInfoById(userId);
+			UserInfo info = managerService.getUserInfoById(userId);
 			entity.setResult(info);
 			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
 			entity = this.writeError(entity, e);
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
 			entity = this.writeError(entity, e1);
 		}
 		return entity;
@@ -175,20 +158,17 @@ public class ManagerController extends BaseController {
 
 	@RequestMapping("/getItemInfo")
 	@ResponseBody
-	public Object getItemInfo(
-			@RequestParam(value = "itemId", required = true) String itemId)
-			throws Exception {
+	public Object getItemInfo(@RequestParam(value = "itemId", required = true) String itemId) throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
-			GradeItemInfo info=managerService.getItemInfoById(itemId);
+			GradeItemInfo info = managerService.getItemInfoById(itemId);
 			entity.setResult(info);
 			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
 			entity = this.writeError(entity, e);
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
 			entity = this.writeError(entity, e1);
 		}
 		return entity;
@@ -196,63 +176,61 @@ public class ManagerController extends BaseController {
 
 	@RequestMapping("/getBatchInfo")
 	@ResponseBody
-	public Object getBatchInfo(
-			@RequestParam(value = "batchId", required = true) String batchId)
-			throws Exception {
+	public Object getBatchInfo(@RequestParam(value = "batchId", required = true) String batchId) throws Exception {
 		ResultEntity entity = new ResultEntity();
 		try {
-			GradeBatchInfo info=managerService.getBatchInfoById(batchId);
+			GradeBatchInfo info = managerService.getBatchInfoById(batchId);
 			entity.setResult(info);
 			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
 			entity = this.writeError(entity, e);
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
-			BusinessException e1 = new BusinessException(
-					BusinessExceptionEnum.SYSTEM_ERROR);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
 			entity = this.writeError(entity, e1);
 		}
 		return entity;
 	}
-	
+
 	@RequestMapping("/addOrgInfo")
 	@ResponseBody
-	public Object addOrgInfo(@Validated({ AddOrgInfo.class }) OrgInfo orgInfo,
-			BindingResult result,HttpServletRequest request){
-		ResultEntity entity=new ResultEntity();
+	public Object addOrgInfo(@Validated({ AddOrgInfo.class }) OrgInfo orgInfo, BindingResult result,
+			HttpServletRequest request) {
+		ResultEntity entity = new ResultEntity();
 		try {
-			if(result.hasErrors()){
-				return this.getBindResult(result,entity);
+			if (result.hasErrors()) {
+				return this.getBindResult(result, entity);
 			}
 			managerService.addOrgInfo(orgInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
-		
+
 	}
+
 	@RequestMapping("/addUserInfo")
 	@ResponseBody
-	public Object addUserInfo(@Validated({ UserInfo.AddUserInfo.class }) UserInfo userInfo,
-							 BindingResult result,HttpServletRequest request){
-		ResultEntity entity=new ResultEntity();
+	public Object addUserInfo(@Validated({ UserInfo.AddUserInfo.class }) UserInfo userInfo, BindingResult result,
+			HttpServletRequest request) {
+		ResultEntity entity = new ResultEntity();
 		try {
-			if(result.hasErrors()){
-				return this.getBindResult(result,entity);
+			if (result.hasErrors()) {
+				return this.getBindResult(result, entity);
 			}
 			managerService.addUserInfo(userInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
 
@@ -261,20 +239,20 @@ public class ManagerController extends BaseController {
 	@RequestMapping("/addItemInfo")
 	@ResponseBody
 	public Object addItemInfo(@Validated({ GradeItemInfo.AddGradeItemInfo.class }) GradeItemInfo itemInfo,
-							 BindingResult result,HttpServletRequest request){
-		ResultEntity entity=new ResultEntity();
+			BindingResult result, HttpServletRequest request) {
+		ResultEntity entity = new ResultEntity();
 		try {
-			if(result.hasErrors()){
-				return this.getBindResult(result,entity);
+			if (result.hasErrors()) {
+				return this.getBindResult(result, entity);
 			}
 			managerService.addItemInfo(itemInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
 
@@ -283,64 +261,64 @@ public class ManagerController extends BaseController {
 	@RequestMapping("/addBatchInfo")
 	@ResponseBody
 	public Object addBatchInfo(@Validated({ GradeBatchInfo.AddGradeBatchInfo.class }) GradeBatchInfo batchInfo,
-							  BindingResult result,HttpServletRequest request){
-		ResultEntity entity=new ResultEntity();
+			BindingResult result, HttpServletRequest request) {
+		ResultEntity entity = new ResultEntity();
 		try {
-			if(result.hasErrors()){
-				return this.getBindResult(result,entity);
+			if (result.hasErrors()) {
+				return this.getBindResult(result, entity);
 			}
 			managerService.addBatchInfo(batchInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
 
 	}
-	
+
 	@RequestMapping("/modifyOrgInfo")
 	@ResponseBody
-	public Object modifyOrgInfo(@Validated({ AddOrgInfo.class }) OrgInfo orgInfo,
-			BindingResult result,HttpServletRequest request){
-		ResultEntity entity=new ResultEntity();
+	public Object modifyOrgInfo(@Validated({ AddOrgInfo.class }) OrgInfo orgInfo, BindingResult result,
+			HttpServletRequest request) {
+		ResultEntity entity = new ResultEntity();
 		try {
-			if(result.hasErrors()){
-				return this.getBindResult(result,entity);
+			if (result.hasErrors()) {
+				return this.getBindResult(result, entity);
 			}
 			managerService.updateOrgInfo(orgInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
-		
+
 	}
 
 	@RequestMapping("/modifyUserInfo")
 	@ResponseBody
-	public Object modifyUserInfo(@Validated({ UserInfo.ModifyUserInfo.class })  UserInfo userInfo,
-								BindingResult result,HttpServletRequest request){
-		ResultEntity entity=new ResultEntity();
+	public Object modifyUserInfo(@Validated({ UserInfo.ModifyUserInfo.class }) UserInfo userInfo, BindingResult result,
+			HttpServletRequest request) {
+		ResultEntity entity = new ResultEntity();
 		try {
-			if(result.hasErrors()){
-				return this.getBindResult(result,entity);
+			if (result.hasErrors()) {
+				return this.getBindResult(result, entity);
 			}
 			managerService.updateUserInfo(userInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
 
@@ -349,20 +327,20 @@ public class ManagerController extends BaseController {
 	@RequestMapping("/modifyItemInfo")
 	@ResponseBody
 	public Object modifyItemInfo(@Validated({ GradeItemInfo.AddGradeItemInfo.class }) GradeItemInfo itemInfo,
-								BindingResult result,HttpServletRequest request){
-		ResultEntity entity=new ResultEntity();
+			BindingResult result, HttpServletRequest request) {
+		ResultEntity entity = new ResultEntity();
 		try {
-			if(result.hasErrors()){
-				return this.getBindResult(result,entity);
+			if (result.hasErrors()) {
+				return this.getBindResult(result, entity);
 			}
 			managerService.updateItemInfo(itemInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
 
@@ -371,56 +349,56 @@ public class ManagerController extends BaseController {
 	@RequestMapping("/modifyBatchInfo")
 	@ResponseBody
 	public Object modifyBatchInfo(@Validated({ GradeBatchInfo.AddGradeBatchInfo.class }) GradeBatchInfo batchInfo,
-								 BindingResult result,HttpServletRequest request){
-		ResultEntity entity=new ResultEntity();
+			BindingResult result, HttpServletRequest request) {
+		ResultEntity entity = new ResultEntity();
 		try {
-			if(result.hasErrors()){
-				return this.getBindResult(result,entity);
+			if (result.hasErrors()) {
+				return this.getBindResult(result, entity);
 			}
 			managerService.updateBatchInfo(batchInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
 
 	}
-	
+
 	@RequestMapping("/deleteOrgInfo")
 	@ResponseBody
-	public Object deleteOrgInfo( OrgInfo orgInfo){
-		ResultEntity entity=new ResultEntity();
+	public Object deleteOrgInfo(OrgInfo orgInfo) {
+		ResultEntity entity = new ResultEntity();
 		try {
 			managerService.removeOrgInfo(orgInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
-		
+
 	}
 
 	@RequestMapping("/deleteUserInfo")
 	@ResponseBody
-	public Object deleteUserInfo( UserInfo userInfo){
-		ResultEntity entity=new ResultEntity();
+	public Object deleteUserInfo(UserInfo userInfo) {
+		ResultEntity entity = new ResultEntity();
 		try {
 			managerService.removeUserInfo(userInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
 
@@ -428,17 +406,17 @@ public class ManagerController extends BaseController {
 
 	@RequestMapping("/deleteItemInfo")
 	@ResponseBody
-	public Object deleteItemInfo( GradeItemInfo itemInfo){
-		ResultEntity entity=new ResultEntity();
+	public Object deleteItemInfo(GradeItemInfo itemInfo) {
+		ResultEntity entity = new ResultEntity();
 		try {
 			managerService.removeItemInfo(itemInfo);
-			entity=this.writeSuccess(entity);
+			entity = this.writeSuccess(entity);
 		} catch (BusinessException e) {
-			entity=this.writeError(entity, e);
-		} catch (Exception e){
-			logger.error(e.getLocalizedMessage(),e);
-			BusinessException e1=new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
-			entity=this.writeError(entity, e1);
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
 		}
 		return entity;
 
