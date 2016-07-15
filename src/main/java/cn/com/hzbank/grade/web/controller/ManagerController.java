@@ -422,4 +422,40 @@ public class ManagerController extends BaseController {
 
 	}
 
+	@RequestMapping("/score")
+	@ResponseBody
+	public Object score(@RequestParam("batchId") String batchId,@RequestParam("orgId") String orgId) {
+		ResultEntity entity = new ResultEntity();
+		try {
+			entity = managerService.getUserScore(batchId,orgId);
+			entity = this.writeSuccess(entity);
+		} catch (BusinessException e) {
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
+		}
+		return entity;
+
+	}
+
+	@RequestMapping("/scoreAvg")
+	@ResponseBody
+	public Object scoreAvg(@RequestParam("batchId") String batchId,@RequestParam("orgId") String orgId) {
+		ResultEntity entity = new ResultEntity();
+		try {
+			entity = managerService.getUserScoreAvg(batchId,orgId);
+			entity = this.writeSuccess(entity);
+		} catch (BusinessException e) {
+			entity = this.writeError(entity, e);
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
+			BusinessException e1 = new BusinessException(BusinessExceptionEnum.SYSTEM_ERROR);
+			entity = this.writeError(entity, e1);
+		}
+		return entity;
+
+	}
+
 }

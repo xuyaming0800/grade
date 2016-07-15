@@ -162,7 +162,7 @@ function initBatchInfoListTable(msg){
 	else{
 		for(var i=0;i<msg.result.length;i++){
 			var html="";
-			html="<tr><td>"+msg.result[i].batchName+"</td><td><input type='hidden' value='"+msg.result[i].id+"'><span class='glyphicon glyphicon-pencil' aria-hidden='true' title='修改'></span>&nbsp;&nbsp;</tr>";
+			html="<tr><td>"+msg.result[i].batchName+"</td><td><input type='hidden' value='"+msg.result[i].id+"'><span class='glyphicon glyphicon-pencil' aria-hidden='true' title='修改'></span>&nbsp;&nbsp;<span class='glyphicon glyphicon-list-alt' aria-hidden='true' title='查看结果'></span></tr>";
 			$("#batchManager #batchList").find("tbody").append(html);
 			count++
 		}
@@ -203,6 +203,11 @@ function initBatchInfoListTable(msg){
 			});
 		});
 		$("#batchManager div.modify").modal("show");
+	});
+
+	$("#batchManager #batchList span.glyphicon-list-alt").on("click",function(){
+		var batchId=$(this).siblings("input:hidden").val();
+		scoreManagerInit(batchId);
 	});
 }
 </script>

@@ -30,6 +30,10 @@
 							<td width="20%" style="line-height:35px">测评项目名称</td>
 							<td width="80%"><input type="text" name="name" class="form-control itemName"></td>
 						</tr>
+						<tr>
+							<td width="20%" style="line-height:35px">权重值</td>
+							<td width="80%"><input type="text" name="name" class="form-control percent"></td>
+						</tr>
 					</table>
 				</div>
 				<div class="modal-footer">
@@ -53,6 +57,10 @@
 							<td width="20%" style="line-height:35px">测评项目名称</td>
 							<input type="hidden" class="itemId">
 							<td width="80%"><input type="text" name="name" class="form-control itemName"></td>
+						</tr>
+						<tr>
+							<td width="20%" style="line-height:35px">权重值</td>
+							<td width="80%"><input type="text" name="name" class="form-control percent"></td>
 						</tr>
 					</table>
 				</div>
@@ -81,11 +89,12 @@ function itemManagerInit(){
 
 	$("#itemManager div.add button.btn-primary").on("click",function(){
 		var itemName=$("#itemManager div.add input.itemName ").val();
+		var percent=$("#itemManager div.add input.percent ").val();
 		$.ajax({
 			type: "POST",
 			url: "../manager/addItemInfo",
 			dataType:"json",
-			data:{"itemName":itemName} ,
+			data:{"itemName":itemName,"percent":percent} ,
 			success: function(msg){
 				if(msg.status.code==0){
 					$("#itemManager div.add").modal("hide");
@@ -101,12 +110,13 @@ function itemManagerInit(){
 	});
 	$("#itemManager div.modify button.btn-primary").on("click",function(){
 		var itemName=$("#itemManager div.modify input.itemName ").val();
+		var percent=$("#itemManager div.modify input.percent ").val();
 		var itemId=$("#itemManager div.modify input.itemId").val();
 		$.ajax({
 			type: "POST",
 			url: "../manager/modifyItemInfo",
 			dataType:"json",
-			data:{"itemName":itemName,"id":itemId} ,
+			data:{"itemName":itemName,"id":itemId,"percent":percent} ,
 			success: function(msg){
 				if(msg.status.code==0){
 					$("#itemManager div.modify").modal("hide");
@@ -213,6 +223,7 @@ function initItemInfoListTable(msg){
 				success: function(msg){
 					if(msg.status.code==0){
 						$("#itemManager div.modify input.itemName").val(msg.result.itemName);
+						$("#itemManager div.modify input.percent").val(msg.result.percent);
 						$("#itemManager div.modify input.itemId").val(itemId);
 						$("#itemManager div.modify button.btn-primary").attr("disabled",false);
 

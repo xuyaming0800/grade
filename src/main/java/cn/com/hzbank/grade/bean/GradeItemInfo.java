@@ -18,6 +18,17 @@ public class GradeItemInfo extends GradeAbstractBean implements Serializable {
 	@NotEmpty(message = "{item.itemName.null}", groups = { AddGradeItemInfo.class })
 	private String itemName;
 
+	@NotEmpty(message = "{item.percent.null}", groups = { AddGradeItemInfo.class })
+	private String percent;
+
+	public String getPercent() {
+		return percent;
+	}
+
+	public void setPercent(String percent) {
+		this.percent = percent;
+	}
+
 	public String getItemName() {
 		return itemName;
 	}

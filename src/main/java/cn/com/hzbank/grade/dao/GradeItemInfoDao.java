@@ -56,7 +56,7 @@ public class GradeItemInfoDao {
     @Select(collectionType = CollectionType.bean, resultType = GradeItemInfo.class)
     public Object getGradeItemInfoById(@SqlParameter("dsKey") Integer dsKey,@SqlParameter("id") String id) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select  id,item_name itemName,CREATE_TIME createTime,UPDATE_TIME updateTime,status ");
+        sql.append("select  id,item_name itemName,percent,CREATE_TIME createTime,UPDATE_TIME updateTime,status ");
         sql.append(" from grade_item_info ");
         sql.append(" where id=#{id} ");
         return sql.toString();
@@ -79,12 +79,12 @@ public class GradeItemInfoDao {
     @Insert
     public Object addGradeItemInfo(@SqlParameter("info") GradeItemInfo info){
         StringBuffer sql = new StringBuffer();
-        sql.append("insert into grade_item_info(id,item_name,CREATE_TIME,UPDATE_TIME,status) ");
+        sql.append("insert into grade_item_info(id,item_name,percent,CREATE_TIME,UPDATE_TIME,status) ");
         sql.append(" values(");
         sql.append(" #{");
         sql.append(ReservedWord.snowflake);
         sql.append("},");
-        sql.append("#{info.itemName},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),#{info.status})");
+        sql.append("#{info.itemName},#{info.percent},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),#{info.status})");
         return sql.toString();
     }
 
@@ -93,7 +93,7 @@ public class GradeItemInfoDao {
     @Update
     public Object updateGradeItemInfo(@SqlParameter("info") GradeItemInfo info){
         StringBuffer sql = new StringBuffer();
-        sql.append("update grade_item_info set item_name=#{info.itemName}, ");
+        sql.append("update grade_item_info set item_name=#{info.itemName},percent=#{info.percent}, ");
         sql.append(" update_time= UNIX_TIMESTAMP(now()) ");
         sql.append(" where id=#{info.id}");
         return sql.toString();

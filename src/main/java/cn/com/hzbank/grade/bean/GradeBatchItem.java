@@ -9,6 +9,7 @@ public class GradeBatchItem extends GradeAbstractBean implements Serializable {
 	private String itemId;
 
 	public String getBatchId() {
+
 		return batchId;
 	}
 

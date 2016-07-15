@@ -14,7 +14,7 @@
         "GRADE_BATCH_INDEX": [
             {
                 "name": "batch_id",
-                "columnType": "long",
+                "columnType": "string",
                 "columnName": "batch_id",
                 "length": 32
             }

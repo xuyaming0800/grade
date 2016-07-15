@@ -86,7 +86,7 @@ function initPage(options, id, totalCount, limit) {
 		<div class="row">
 		  <div class="col-sm-12 col-md-12 main">
 			<ul class="nav nav-tabs">
-				<li role="presentation" class="active managerMenu"><a href="">管理员首页</a></li>
+				<li role="presentation" class="active managerMenu"><a href="#">管理员首页</a></li>
 				<li role="presentation" class="managerMenu"><a href="javascript:orgManagerInit()">部门管理</a></li>
 				<li role="presentation" class="managerMenu"><a href="javascript:userManagerInit()">用户管理</a></li>
 				<li role="presentation" class="managerMenu"><a href="javascript:itemManagerInit()">测评项目管理</a></li>
@@ -94,6 +94,7 @@ function initPage(options, id, totalCount, limit) {
 			</ul>
 		  </div>
 		</div>
+		<jsp:include page="modals/scoreManager.jsp"></jsp:include>
 		<jsp:include page="modals/orgManager.jsp"></jsp:include>
 		<jsp:include page="modals/userManager.jsp"></jsp:include>
 		<jsp:include page="modals/itemManager.jsp"></jsp:include>

@@ -1,9 +1,6 @@
 package cn.com.hzbank.grade.service;
 
-import cn.com.hzbank.grade.bean.GradeBatchInfo;
-import cn.com.hzbank.grade.bean.GradeItemInfo;
-import cn.com.hzbank.grade.bean.OrgInfo;
-import cn.com.hzbank.grade.bean.UserInfo;
+import cn.com.hzbank.grade.bean.*;
 import cn.com.hzbank.grade.exception.BusinessException;
 import cn.com.hzbank.grade.web.bean.ResultEntity;
 
@@ -175,5 +172,21 @@ public interface ManagerService {
      */
 	public GradeBatchInfo updateBatchInfo(GradeBatchInfo atchInfo)throws BusinessException;
 
+	/**
+	 * 计算分数
+	 * @param orgId
+	 * @param batchId
+	 * @return
+	 * @throws BusinessException
+     */
+	public ResultEntity getUserScore(String orgId,String batchId)throws BusinessException;
 
+	/**
+	 *
+	 * @param orgId
+	 * @param batchId
+	 * @return
+	 * @throws BusinessException
+     */
+	public ResultEntity getUserScoreAvg(String orgId,String batchId)throws BusinessException;
 }

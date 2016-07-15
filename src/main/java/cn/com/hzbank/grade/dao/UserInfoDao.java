@@ -108,6 +108,20 @@ public class UserInfoDao {
 		sql.append(" and id>0 ");
 		return sql.toString();
 	}
+
+	@Author("yaming.xu")
+	@SingleDataSource(keyName="dsKey")
+	@Select(collectionType = CollectionType.column, resultType = Integer.class)
+	public Object getUserInfoWithOrgCount(@SqlParameter("dsKey") Integer dsKey,@SqlParameter("orgId") String orgId) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select count(0) ");
+		sql.append(" from user_info ");
+		sql.append(" where status=");
+		sql.append(USER_INFO_STATUS.USED.getCode());
+		sql.append(" and id>0 ");
+		sql.append(" and org_id=#{orgId} ");
+		return sql.toString();
+	}
 	
 	@Author("yaming.xu")
 	@SingleDataSource(keyName="dsKey")

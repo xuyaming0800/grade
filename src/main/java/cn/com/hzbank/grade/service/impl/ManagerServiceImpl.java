@@ -2,11 +2,12 @@ package cn.com.hzbank.grade.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cn.com.hzbank.grade.bean.*;
 import cn.com.hzbank.grade.component.BusinessExceptionUtil;
-import cn.com.hzbank.grade.dao.GradeBatchInfoDao;
-import cn.com.hzbank.grade.dao.GradeItemInfoDao;
+import cn.com.hzbank.grade.component.ScoreUtil;
+import cn.com.hzbank.grade.dao.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,10 @@ import org.springframework.stereotype.Service;
 import autonavi.online.framework.sharding.dao.DaoHelper;
 import cn.com.hzbank.grade.constant.GradeConstant;
 import cn.com.hzbank.grade.constant.GradeConstant.ORG_INFO_STATUS;
-import cn.com.hzbank.grade.dao.OrgInfoDao;
-import cn.com.hzbank.grade.dao.UserInfoDao;
 import cn.com.hzbank.grade.exception.BusinessException;
 import cn.com.hzbank.grade.service.ManagerService;
 import cn.com.hzbank.grade.web.bean.ResultEntity;
+
 @Service
 public class ManagerServiceImpl implements ManagerService {
 	private Logger logger = LogManager.getLogger(this.getClass());
@@ -33,6 +33,10 @@ public class ManagerServiceImpl implements ManagerService {
 	private GradeBatchInfoDao gradeBatchInfoDao;
 	@Autowired
 	private BusinessExceptionUtil businessExceptionUtil;
+	@Autowired
+	private ScoreUtil scoreUtil;
+	@Autowired
+	private UserScoreDao userScoreDao;
 
 	@Override
 	public OrgInfo addOrgInfo(OrgInfo orgInfo) throws BusinessException {
@@ -40,7 +44,7 @@ public class ManagerServiceImpl implements ManagerService {
 		try {
 			orgInfo.setStatus(ORG_INFO_STATUS.USED.getCode());
 			orgInfoDao.addOrgInfo(orgInfo);
-			Long id=DaoHelper.createPrimaryKey();
+			Long id = DaoHelper.createPrimaryKey();
 			orgInfo.setId(id.toString());
 			return orgInfo;
 		} catch (Exception e) {
@@ -50,19 +54,19 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResultEntity queryOrgInfoByName(String query, Integer pageNo,
-			Integer pageSize) throws BusinessException {
+	public ResultEntity queryOrgInfoByName(String query, Integer pageNo, Integer pageSize) throws BusinessException {
 		try {
-			Integer start=(pageNo-1)*pageSize;
-			query="%"+query+"%";
-			List<OrgInfo> list=(List<OrgInfo>)orgInfoDao.getOrgInfoByName(GradeConstant.getSingleDataSourceKey(), query, start, pageSize);
+			Integer start = (pageNo - 1) * pageSize;
+			query = "%" + query + "%";
+			List<OrgInfo> list = (List<OrgInfo>) orgInfoDao.getOrgInfoByName(GradeConstant.getSingleDataSourceKey(),
+					query, start, pageSize);
 			if (list == null)
 				list = new ArrayList<OrgInfo>();
 			ResultEntity entity = new ResultEntity();
 			entity.setResult(list);
-			entity.setTotalCount(((Long) orgInfoDao
-					.getOrgInfoCountByName(GradeConstant
-							.getSingleDataSourceKey(),query)).toString());
+			entity.setTotalCount(
+					((Long) orgInfoDao.getOrgInfoCountByName(GradeConstant.getSingleDataSourceKey(), query))
+							.toString());
 			return entity;
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
@@ -71,18 +75,17 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResultEntity queryOrgInfo(Integer pageNo, Integer pageSize)
-			throws BusinessException {
+	public ResultEntity queryOrgInfo(Integer pageNo, Integer pageSize) throws BusinessException {
 		try {
-			Integer start=(pageNo-1)*pageSize;
-			List<OrgInfo> list=(List<OrgInfo>)orgInfoDao.getOrgInfoByPage(GradeConstant.getSingleDataSourceKey(), start, pageSize);
+			Integer start = (pageNo - 1) * pageSize;
+			List<OrgInfo> list = (List<OrgInfo>) orgInfoDao.getOrgInfoByPage(GradeConstant.getSingleDataSourceKey(),
+					start, pageSize);
 			if (list == null)
 				list = new ArrayList<OrgInfo>();
 			ResultEntity entity = new ResultEntity();
 			entity.setResult(list);
-			entity.setTotalCount(((Long) orgInfoDao
-					.getOrgInfoCountByPage(GradeConstant
-							.getSingleDataSourceKey())).toString());
+			entity.setTotalCount(
+					((Long) orgInfoDao.getOrgInfoCountByPage(GradeConstant.getSingleDataSourceKey())).toString());
 			return entity;
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
@@ -94,7 +97,7 @@ public class ManagerServiceImpl implements ManagerService {
 		try {
 			userInfo.setStatus(GradeConstant.USER_INFO_STATUS.USED.getCode());
 			userInfoDao.addUserInfo(userInfo);
-			Long id=DaoHelper.createPrimaryKey();
+			Long id = DaoHelper.createPrimaryKey();
 			userInfo.setId(id.toString());
 			return userInfo;
 		} catch (Exception e) {
@@ -104,19 +107,19 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResultEntity queryUserInfoByName(String query, Integer pageNo,
-			Integer pageSize) throws BusinessException {
+	public ResultEntity queryUserInfoByName(String query, Integer pageNo, Integer pageSize) throws BusinessException {
 		try {
-			Integer start=(pageNo-1)*pageSize;
-			query="%"+query+"%";
-			List<UserInfo> list=(List<UserInfo>)userInfoDao.getUserInfoWithOrgByName(GradeConstant.getSingleDataSourceKey(), query, start, pageSize);
+			Integer start = (pageNo - 1) * pageSize;
+			query = "%" + query + "%";
+			List<UserInfo> list = (List<UserInfo>) userInfoDao
+					.getUserInfoWithOrgByName(GradeConstant.getSingleDataSourceKey(), query, start, pageSize);
 			if (list == null)
 				list = new ArrayList<UserInfo>();
 			ResultEntity entity = new ResultEntity();
 			entity.setResult(list);
-			entity.setTotalCount(((Long) userInfoDao
-					.getUserInfoWithOrgCountByName(GradeConstant
-							.getSingleDataSourceKey(),query)).toString());
+			entity.setTotalCount(
+					((Long) userInfoDao.getUserInfoWithOrgCountByName(GradeConstant.getSingleDataSourceKey(), query))
+							.toString());
 			return entity;
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
@@ -125,18 +128,18 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResultEntity queryUserInfo(Integer pageNo, Integer pageSize)
-			throws BusinessException {
+	public ResultEntity queryUserInfo(Integer pageNo, Integer pageSize) throws BusinessException {
 		try {
-			Integer start=(pageNo-1)*pageSize;
-			List<UserInfo> list=(List<UserInfo>)userInfoDao.getUserInfoWithOrgByPage(GradeConstant.getSingleDataSourceKey(), start, pageSize);
+			Integer start = (pageNo - 1) * pageSize;
+			List<UserInfo> list = (List<UserInfo>) userInfoDao
+					.getUserInfoWithOrgByPage(GradeConstant.getSingleDataSourceKey(), start, pageSize);
 			if (list == null)
 				list = new ArrayList<UserInfo>();
 			ResultEntity entity = new ResultEntity();
 			entity.setResult(list);
-			entity.setTotalCount(((Long) userInfoDao
-					.getUserInfoWithOrgCountByPage(GradeConstant
-							.getSingleDataSourceKey())).toString());
+			entity.setTotalCount(
+					((Long) userInfoDao.getUserInfoWithOrgCountByPage(GradeConstant.getSingleDataSourceKey()))
+							.toString());
 			return entity;
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
@@ -146,7 +149,8 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public OrgInfo getOrgInfoById(String id) throws BusinessException {
 		try {
-			OrgInfo info=(OrgInfo)orgInfoDao.getOrgInfoById(GradeConstant.getSingleDataSourceKey(), Long.valueOf(id));
+			OrgInfo info = (OrgInfo) orgInfoDao.getOrgInfoById(GradeConstant.getSingleDataSourceKey(),
+					Long.valueOf(id));
 			return info;
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
@@ -173,12 +177,13 @@ public class ManagerServiceImpl implements ManagerService {
 			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
+
 	@Override
-	public UserInfo getUserInfoById(String id)throws BusinessException{
+	public UserInfo getUserInfoById(String id) throws BusinessException {
 		try {
-			UserInfo info=new UserInfo();
+			UserInfo info = new UserInfo();
 			info.setId(id);
-			info=(UserInfo)userInfoDao.getUserInfoById(info);
+			info = (UserInfo) userInfoDao.getUserInfoById(info);
 			return info;
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
@@ -186,7 +191,7 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public UserInfo updateUserInfo(UserInfo userInfo)throws BusinessException{
+	public UserInfo updateUserInfo(UserInfo userInfo) throws BusinessException {
 		try {
 			userInfoDao.updateUserInfo(userInfo);
 			return userInfo;
@@ -194,8 +199,9 @@ public class ManagerServiceImpl implements ManagerService {
 			throw businessExceptionUtil.getBusinessException(e);
 		}
 	}
+
 	@Override
-	public UserInfo removeUserInfo(UserInfo userInfo)throws BusinessException{
+	public UserInfo removeUserInfo(UserInfo userInfo) throws BusinessException {
 		try {
 			userInfoDao.deleteUserInfo(userInfo);
 			return userInfo;
@@ -204,19 +210,19 @@ public class ManagerServiceImpl implements ManagerService {
 		}
 	}
 
-
 	@Override
 	public ResultEntity queryItemInfo(Integer pageNo, Integer pageSize) throws BusinessException {
 		try {
-			Integer start=(pageNo-1)*pageSize;
-			List<GradeItemInfo> list=(List<GradeItemInfo>)gradeItemInfoDao.getGradeItemInfoByPage(GradeConstant.getSingleDataSourceKey(), start, pageSize);
+			Integer start = (pageNo - 1) * pageSize;
+			List<GradeItemInfo> list = (List<GradeItemInfo>) gradeItemInfoDao
+					.getGradeItemInfoByPage(GradeConstant.getSingleDataSourceKey(), start, pageSize);
 			if (list == null)
 				list = new ArrayList<GradeItemInfo>();
 			ResultEntity entity = new ResultEntity();
 			entity.setResult(list);
-			entity.setTotalCount(((Long) gradeItemInfoDao
-					.getGradeItemInfoByPageCount(GradeConstant
-							.getSingleDataSourceKey())).toString());
+			entity.setTotalCount(
+					((Long) gradeItemInfoDao.getGradeItemInfoByPageCount(GradeConstant.getSingleDataSourceKey()))
+							.toString());
 			return entity;
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
@@ -226,15 +232,16 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public ResultEntity queryBatchInfo(Integer pageNo, Integer pageSize) throws BusinessException {
 		try {
-			Integer start=(pageNo-1)*pageSize;
-			List<GradeBatchInfo> list=(List<GradeBatchInfo>)gradeBatchInfoDao.getGradeBatchInfoByPage(GradeConstant.getSingleDataSourceKey(), start, pageSize);
+			Integer start = (pageNo - 1) * pageSize;
+			List<GradeBatchInfo> list = (List<GradeBatchInfo>) gradeBatchInfoDao
+					.getGradeBatchInfoByPage(GradeConstant.getSingleDataSourceKey(), start, pageSize);
 			if (list == null)
 				list = new ArrayList<GradeBatchInfo>();
 			ResultEntity entity = new ResultEntity();
 			entity.setResult(list);
-			entity.setTotalCount(((Long) gradeBatchInfoDao
-					.getGradeBatchInfoByPageCount(GradeConstant
-							.getSingleDataSourceKey())).toString());
+			entity.setTotalCount(
+					((Long) gradeBatchInfoDao.getGradeBatchInfoByPageCount(GradeConstant.getSingleDataSourceKey()))
+							.toString());
 			return entity;
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
@@ -244,7 +251,8 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public GradeItemInfo getItemInfoById(String id) throws BusinessException {
 		try {
-			GradeItemInfo info=(GradeItemInfo)gradeItemInfoDao.getGradeItemInfoById(GradeConstant.getSingleDataSourceKey(),id);
+			GradeItemInfo info = (GradeItemInfo) gradeItemInfoDao
+					.getGradeItemInfoById(GradeConstant.getSingleDataSourceKey(), id);
 			return info;
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
@@ -254,7 +262,8 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public GradeBatchInfo getBatchInfoById(String id) throws BusinessException {
 		try {
-			GradeBatchInfo info=(GradeBatchInfo)gradeBatchInfoDao.getGradeBatchInfoById(GradeConstant.getSingleDataSourceKey(),id);
+			GradeBatchInfo info = (GradeBatchInfo) gradeBatchInfoDao
+					.getGradeBatchInfoById(GradeConstant.getSingleDataSourceKey(), id);
 			return info;
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
@@ -266,7 +275,7 @@ public class ManagerServiceImpl implements ManagerService {
 		try {
 			itemInfo.setStatus(GradeConstant.GRADE_ITEM_INFO_STATUS.USED.getCode());
 			gradeItemInfoDao.addGradeItemInfo(itemInfo);
-			Long id=DaoHelper.createPrimaryKey();
+			Long id = DaoHelper.createPrimaryKey();
 			itemInfo.setId(id.toString());
 			return itemInfo;
 		} catch (Exception e) {
@@ -279,18 +288,19 @@ public class ManagerServiceImpl implements ManagerService {
 		try {
 			batchInfo.setStatus(GradeConstant.BATCH_INFO_STATUS.OPEN.getCode());
 			gradeBatchInfoDao.addGradeBatchInfo(batchInfo);
-			//获取所有的测评项目
-			Long id=DaoHelper.createPrimaryKey();
-			List<GradeItemInfo> l1=(List<GradeItemInfo>)gradeItemInfoDao.getGradeItemInfo(GradeConstant.getSingleDataSourceKey());
-			List<GradeBatchItem> l2=new ArrayList<GradeBatchItem>();
-			for(GradeItemInfo info:l1){
-				GradeBatchItem bi=new GradeBatchItem();
+			// 获取所有的测评项目
+			Long id = DaoHelper.createPrimaryKey();
+			List<GradeItemInfo> l1 = (List<GradeItemInfo>) gradeItemInfoDao
+					.getGradeItemInfo(GradeConstant.getSingleDataSourceKey());
+			List<GradeBatchItem> l2 = new ArrayList<GradeBatchItem>();
+			for (GradeItemInfo info : l1) {
+				GradeBatchItem bi = new GradeBatchItem();
 				bi.setStatus(0);
 				bi.setBatchId(id.toString());
 				bi.setItemId(info.getId());
 				l2.add(bi);
 			}
-			gradeBatchInfoDao.addGradeBatchItem(GradeConstant.getSingleDataSourceKey(),l2);
+			gradeBatchInfoDao.addGradeBatchItem(GradeConstant.getSingleDataSourceKey(), l2);
 			batchInfo.setId(id.toString());
 			return batchInfo;
 		} catch (Exception e) {
@@ -326,5 +336,94 @@ public class ManagerServiceImpl implements ManagerService {
 		} catch (Exception e) {
 			throw businessExceptionUtil.getBusinessException(e);
 		}
+	}
+
+	@Override
+	public ResultEntity getUserScore(String orgId, String batchId) throws BusinessException {
+
+		try {
+			ResultEntity result=new ResultEntity();
+			// 计算部门内人数
+			Integer count = this.getOrgUserCount(batchId);
+			// 计算分数组
+			String scoreStr = this.getScoreStr(count);
+			// 获取测评组
+			List<String> items = this.getItemNameList(batchId);
+			// 计算分数
+			List<Map<String, Object>> list = (List<Map<String, Object>>) userScoreDao.getUserScore(items, orgId, batchId,
+                    scoreStr);
+			List<UserScoreBean> _list=new ArrayList<UserScoreBean>();
+			for(Map<String, Object> map:list){
+               UserScoreBean bean=new UserScoreBean();
+               for(String key:map.keySet()){
+                   if(key.toLowerCase().equals("username")){
+                       bean.setUserName(map.get(key).toString());
+                   }else if(key.toLowerCase().equals("totalscore")){
+                       bean.setTotalScore(Double.valueOf(map.get(key).toString()));
+                   }else if(key.endsWith("_score")){
+                       bean.getScoreMap().put(key.replace("_score",""),Double.valueOf(map.get(key).toString()));
+                   }else if(key.endsWith("_grade")){
+                       bean.getGradeMap().put(key.replace("_grade",""),Integer.valueOf(map.get(key).toString()));
+                   }
+               }
+               _list.add(bean);
+           }
+			result.setResult(_list);
+			return result;
+		} catch (NumberFormatException e) {
+			throw businessExceptionUtil.getBusinessException(e);
+		}
+	}
+
+
+
+	@Override
+	public ResultEntity getUserScoreAvg(String orgId, String batchId) throws BusinessException {
+		try {
+			ResultEntity result=new ResultEntity();
+			// 计算部门内人数
+			Integer count = this.getOrgUserCount(batchId);
+			// 计算分数组
+			String scoreStr = this.getScoreStr(count);
+			// 获取测评组
+			List<String> items = this.getItemNameList(batchId);
+			// 计算分数
+			List<Map<String, Object>> list = (List<Map<String, Object>>) userScoreDao.getUserScoreAvg(items, orgId, batchId,
+					scoreStr);
+			List<UserScoreBean> _list=new ArrayList<UserScoreBean>();
+			for(Map<String, Object> map:list){
+				UserScoreBean bean=new UserScoreBean();
+				for(String key:map.keySet()){
+					if(key.toLowerCase().equals("username")){
+						bean.setUserName(map.get(key).toString());
+					}else if(key.toLowerCase().equals("totalscore")){
+						bean.setTotalScore(Double.valueOf(map.get(key).toString()));
+					}
+				}
+				_list.add(bean);
+			}
+			result.setResult(_list);
+			return result;
+		} catch (NumberFormatException e) {
+			throw businessExceptionUtil.getBusinessException(e);
+		}
+	}
+
+	private Integer getOrgUserCount(String orgId){
+		return (Integer) userInfoDao.getUserInfoWithOrgCount(GradeConstant.getSingleDataSourceKey(), orgId);
+	}
+
+	private String getScoreStr(Integer count){
+		return scoreUtil.generateScores(count);
+	}
+
+	private List<String> getItemNameList(String batchId){
+		List<GradeItemInfo> itemList = (List<GradeItemInfo>) gradeItemInfoDao
+				.getGradeItemInfoByBatchId(GradeConstant.getSingleDataSourceKey(), Long.valueOf(batchId));
+		List<String> items = new ArrayList<String>();
+		for (GradeItemInfo item : itemList) {
+			items.add(item.getItemName());
+		}
+		return items;
 	}
 }
